@@ -3,21 +3,12 @@
 ## 1. What is Spring Boot vs Spring Framework?
 
 - **Spring Framework** (2003): Powerful but requires a lot of manual XML/Java config. You configure beans, define data sources, set up MVC dispatchers manually. It gives flexibility but also complexity.
-- **Spring Boot** (2014): Built on top of Spring Framework. Its main goal is to reduce boilerplate and accelerate development:
-  - Applies _convention over configuration_ → sensible defaults out of the box.
+- **Spring Boot** (2014): Built on top of Spring Framework that applies convention over configuration. Its main goal is to reduce boilerplate and accelerate development:
   - **Auto-configuration** → automatically wires components based on classpath (e.g., if H2 DB is present, it auto-configures a datasource).
   - **Starters** → pre-packaged dependencies (e.g., `spring-boot-starter-web` includes Spring MVC, Jackson, Tomcat).
   - **Embedded servers** → run apps without external Tomcat install.
   - **Production-ready features** → health checks, metrics, logging, monitoring via Actuator.
-- Bottom line: Spring Boot makes it easy to start, while still allowing customization if needed.
 - **Spring Framework**: a comprehensive framework for Java applications. Provides DI container, MVC, JDBC, JPA, transaction management, etc. But it is highly configurable → requires lots of manual setup.
-- **Spring Boot**: a layer **on top of Spring Framework** that applies _convention over configuration_. It provides:
-  - Auto-configuration (sensible defaults based on classpath and environment).
-  - Starter dependencies (bundled sets of libraries for common use cases).
-  - Embedded servers (Tomcat, Jetty, Undertow).
-  - Production-ready features (metrics, health checks, etc.).
-
-👉 With Spring Boot you still have full access to the flexibility of Spring Framework, but with faster and easier setup.
 
 ---
 
