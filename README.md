@@ -12,34 +12,57 @@
 
 ---
 
-## 2. Project Bootstrapping (Spring Initializr)
+## 2. Project Bootstrapping (Spring Initializer)
 
-- Spring Initializr (https://start.spring.io) is the **quickest way** to create a Spring Boot project.
+- [Spring Initialize](https://start.spring.io) is the **quickest way** to create a Spring Boot project.
 - Steps:
   1. Fill metadata → Group (like package root), Artifact (project name), Packaging (Jar/War), Java version.
   2. Choose dependencies → e.g., `spring-boot-starter-web` (REST), `spring-boot-starter-data-jpa` (DB).
   3. Download and extract → contains Maven wrapper and pre-set folder structure.
-- Transcript note: Always keep the main class in root package so that **component scanning** covers the entire project.
-- Maven structure explained:
-  - `src/main/java` → core code.
-  - `src/main/resources` → config (`application.properties`), static files, templates.
-  - `src/test/java` → unit/integration tests.
-  - `target/` → auto-generated build artifacts.
-    👉 This layout ensures Spring Boot finds what it needs automatically without extra config.
-- Use [Spring Initializr](https://start.spring.io) to generate a skeleton project.
-- Choose:
-  - **Language** (Java), **Build tool** (Maven/Gradle), **Spring Boot version**, **Java version**.
-  - **Dependencies** (e.g., `spring-boot-starter-web` for REST APIs).
-- Project structure (Maven convention):
-  - `src/main/java` → application code.
-  - `src/main/resources` → config files, static assets, templates.
-  - `src/test/java` → test code.
-  - `src/test/resources` → test configs/resources.
-  - `target/` → build outputs (compiled classes, jar/war).
+- **Note**: Always keep the main class in root package so that **component scanning** covers the entire project.
+- [Maven Directory convention](https://maven.apache.org/guides/introduction/introduction-to-the-standard-directory-layout.html)
+  - layout ensures Spring Boot finds what it needs automatically without extra config.
+    - `src/main/java` → application code.
+    - `src/main/resources` → config files(`application.properties`), static assets, templates.
+    - `src/test/java` → test code.
+    - `src/test/resources` → test configs/resources.
+    - `target/` → build outputs (compiled classes, jar/war).
 
 ---
 
-## 3. Entry Point: `@SpringBootApplication`
+## 3. Maven Basics and Wrapper 
+
+- **Maven** = build automation tool. It manages dependencies, compiles code, runs tests, packages app.
+  - Install mvn locally and run the `mvn` commands
+- **Maven wrapper** (`./mvnw` / `mvnw.cmd`) ensures consistent Maven version across developers.
+- Maven lifecycles Phases:
+  - `clean` 
+    - `pre-clean` → Hook for before cleaning
+    - `clean` → Actual cleaning removes temp directories and files (such as  `target/`).
+    - `post-clean` → Hook for before cleaning
+  - `default`  
+    - `compile` → compile source code to byte code
+    - `test` → runs JUnit tests. 
+    - `package` → builds jar/war in `target/`.
+    - `verify` → runs integration checks.
+  - `site` → used to generate a project's documentation and reports as a static website.
+- Any Maven lifecycle commands invoked, always runs commands in the sequential order
+  - `clean` → `default` → `site`  
+  - ```bash
+    ./mvnw clean test        # clean + compile + run unit tests
+    ./mvnw package           # clean + compile + test + build artifact
+    ```
+- Plugins:
+    - **Spring Boot Maven Plugin** found on `pom.xml` allows running server locally with `mvn spring-boot:run`.
+- You can run app a few ways:
+  1. `mvnw spring-boot:run` → using locally installed maven.
+  2. `./mvnw spring-boot:run` → using maven wrapper.
+  3. `java -jar target/sprintBootStarter-0.0.1-SNAPSHOT.jar` → production-like mode.
+
+
+---
+
+## 4. Entry Point: `@SpringBootApplication`
 
 - The `main` method is the entry point just like any Java program, but Spring Boot augments it with advanced bootstrapping.
 - `@SpringBootApplication` combines:
@@ -85,7 +108,7 @@ sequenceDiagram
 
 ---
 
-## 4. REST Controller Example
+## 5. REST Controller Example
 
 - REST controllers expose endpoints to clients (browser, Postman, other services).
 - `@RestController` = `@Controller` + `@ResponseBody` → all methods return data (JSON/String) directly, no need for templates.
@@ -113,39 +136,6 @@ public class HelloController {
 - Spring Boot (via `spring-boot-starter-web`) automatically:
   - Configures Tomcat as embedded server.
   - Serializes responses to JSON (via Jackson).
-
----
-
-## 5. Maven Basics and Wrapper (`mvnw`)
-
-- **Maven** = build automation tool. It manages dependencies, compiles code, runs tests, packages app.
-- **Maven Wrapper (`mvnw`)**: ensures all devs use the same Maven version → avoids "works on my machine" issues.
-- Transcript tip: Run builds frequently (`./mvnw clean test`) while coding, then package and run jar before commit → catch config/runtime issues early.
-- Maven lifecycles:
-  - `clean` → deletes `target/`.
-  - `compile` → compiles source code.
-  - `test` → runs JUnit tests.
-  - `package` → builds jar/war in `target/`.
-  - `verify` → runs integration checks.
-- Plugins:
-  - **Spring Boot Maven Plugin** allows running with `./mvnw spring-boot:run`.
-- You can run app two ways:
-  1. `./mvnw spring-boot:run` → dev mode, fast restart.
-  2. `java -jar target/app.jar` → production-like mode.
-- **Maven wrapper** (`./mvnw` / `mvnw.cmd`) ensures consistent Maven version across developers.
-- Maven lifecycle (default):
-  - `clean` → delete target/ folder.
-  - `compile` → compile source code.
-  - `test` → run tests.
-  - `package` → create jar/war.
-  - `verify` → run integration checks.
-- Useful commands:
-  ```bash
-  ./mvnw clean test        # compile + run unit tests
-  ./mvnw package           # build artifact
-  ./mvnw spring-boot:run   # run app via plugin
-  java -jar target/app.jar # run jar like prod
-  ```
 
 ---
 
@@ -192,7 +182,7 @@ public class HelloController {
   - Files (`application.properties`/`yml`).
   - Environment variables.
   - Command line arguments.
-- Environment variable convention: convert property keys → uppercase with `_` replacing `.`.  
+- Environment variable convention: convert property keys → uppercase with `_` replacing `.`.
   Example: `server.port` → `SERVER_PORT`.
 
 ---
@@ -222,8 +212,8 @@ public class HelloController {
 
   - Analogy from transcript: think of a box needing colored pieces (green, blue, red, yellow). Instead of building them itself, the box _declares what it needs_ and Spring supplies them.
   - The term "Dependency Injection" was popularized by Martin Fowler.
-
 - **Beans**: Concrete objects managed by Spring and stored in the _ApplicationContext_ (essentially a pool/container of beans).
+
   - Spring resolves dependencies between beans and injects them automatically.
   - Transcript example: `ColorPrinter` used to `new` its dependencies (manual wiring). With DI, it simply declares dependencies in its constructor, and Spring injects the beans.
 
@@ -231,7 +221,7 @@ public class HelloController {
 
 There are two main ways (both shown in transcript):
 
-1. **Java Config with `@Configuration` + `@Bean` methods**  
+1. **Java Config with `@Configuration` + `@Bean` methods**
    Useful for explicit bean creation or when wiring third-party classes.
    ```java
    @Configuration
@@ -242,8 +232,8 @@ There are two main ways (both shown in transcript):
        }
    }
    ```
-2. **Component Scanning with Stereotype Annotations**  
-   Mark classes with `@Component`, `@Service`, `@Repository`, or `@Controller`.  
+2. **Component Scanning with Stereotype Annotations**
+   Mark classes with `@Component`, `@Service`, `@Repository`, or `@Controller`.
    Spring scans packages at startup and registers these classes as beans automatically.
 
 ```java
@@ -256,7 +246,7 @@ public class ColorPrinter {
 }
 ```
 
-- **Default scan root**: Spring Boot’s `@SpringBootApplication` enables component scanning starting from the package of the main class, scanning subpackages.  
+- **Default scan root**: Spring Boot’s `@SpringBootApplication` enables component scanning starting from the package of the main class, scanning subpackages.
   👉 Always place the main class in a top-level package so all components are discovered.
 
 ### Swapping Implementations (Transcript example)
@@ -269,10 +259,10 @@ public class ColorPrinter {
 
 - If Spring cannot find a required bean (e.g., you forgot `@Component` on a class), the app fails at startup with a descriptive error message about the missing bean type.
 - This _fail-fast_ mechanism helps catch misconfigurations early.
-
 - **Inversion of Control**: Let Spring manage dependencies instead of using `new`.
 - **Beans**: Objects managed in Spring’s ApplicationContext.
 - Ways to declare beans:
+
   1. `@Configuration` + `@Bean` methods.
   2. `@Component`, `@Service`, `@Repository`, `@Controller`.
 
@@ -362,14 +352,17 @@ graph TD
 
 - Transcript note: Always externalize sensitive configs (passwords, API keys).
 - Options:
+
   - Environment variables (`SPRING_DATASOURCE_PASSWORD`).
   - Config servers (Spring Cloud Config).
   - Secrets managers (Vault, AWS Secrets Manager, Kubernetes secrets).
 - Typical deployment flow:
+
   1. Package app → `java -jar app.jar`.
   2. Deploy jar in Docker container or Kubernetes pod.
   3. Override configs via env vars or mounted config files.
 - Example:
+
   - In `application.properties`:
     ```properties
     spring.datasource.username=app_user
@@ -381,8 +374,9 @@ graph TD
     ```
 - This separation of code vs config is essential for 12-factor apps.
 - When running in Docker/Kubernetes, use **environment variables** for DB credentials, endpoints, ports, etc.
-- Example:  
+- Example:
   In `application.properties`:
+
   ```properties
   spring.datasource.username=app_user
   ```
