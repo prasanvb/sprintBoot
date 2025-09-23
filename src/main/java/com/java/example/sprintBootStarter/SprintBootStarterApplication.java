@@ -16,15 +16,26 @@ public class SprintBootStarterApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        final PizzaConfig pizza = new PizzaConfig(
+        final PizzaConfig pizza1 = new PizzaConfig(
                 "pan", "regular", "mushroom and pineapple"
         );
 
+        final PizzaConfig pizza2 = new PizzaConfig();
+
+        // All args constructor
+        logPizza(pizza1);
+
+        // No name constructor
+        logPizza(pizza2);
+
+
+    }
+
+    private static void logPizza(PizzaConfig pizza) {
         log.info(String.format("I want a %s crust, %s pizza with %s toppings",
                 pizza.getCrust(),
                 pizza.getSauce(),
                 pizza.getToppings()
         ));
-
     }
 }
