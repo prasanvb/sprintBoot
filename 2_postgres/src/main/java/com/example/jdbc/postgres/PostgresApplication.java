@@ -22,7 +22,7 @@ public class PostgresApplication implements CommandLineRunner {
 	}
 
     @Override
-    public void run(String... args) throws Exception {
+    public void run(String... args) {
         log.info("Postgres dataSource: "+ dataSource.toString());
         final JdbcTemplate restTemplate = new JdbcTemplate(dataSource);
         restTemplate.execute("select 1");
