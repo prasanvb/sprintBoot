@@ -1,9 +1,10 @@
-package com.example.jdbc.dao.dao;
+package com.example.jdbc.dao.dao.Impl;
 
 import com.example.jdbc.dao.dao.impl.AuthorDaoImpl;
 import com.example.jdbc.dao.domain.Author;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentMatchers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -26,7 +27,7 @@ public class AuthorDaoImplTest {
 
     // Marks this method as a JUnit test case
     @Test
-    public void createAuthorDaoGeneratesCorrectSql(){
+    public void verifyCreateAuthorDaoGeneratesCorrectSql(){
         // Create a test Author object using the Builder pattern with sample data
         Author author = Author.builder()
                             .id(1L)
@@ -46,4 +47,18 @@ public class AuthorDaoImplTest {
         );
     }
 
+    @Test
+    public void verifyFindOneAuthorDaoGeneratesCorrectSql(){
+        // Execute the findOne method with a test ID (1L) to trigger database interaction
+        authorDaoImpl.findOne(1L);
+
+        // Verify that JdbcTemplate.query was called exactly once with the expected parameters:
+        // - ArgumentMatchers.<AuthorDaoImpl.AuthorRowMapper>any(): Matches any instance of AuthorRowMapper (since it's created fresh each time)
+        verify(jdbcTemplate).query(
+                eq("SELECT id, name, age FROM authors WHERE id = ? LIMIT 1"),
+                ArgumentMatchers.<AuthorDaoImpl.AuthorRowMapper>any(),  // Accepts any AuthorRowMapper instance
+                eq(1L)
+        );
+
+    }
 }

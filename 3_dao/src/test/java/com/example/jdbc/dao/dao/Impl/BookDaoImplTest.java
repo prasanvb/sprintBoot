@@ -1,4 +1,4 @@
-package com.example.jdbc.dao.dao;
+package com.example.jdbc.dao.dao.Impl;
 
 import com.example.jdbc.dao.dao.impl.BookDaoImpl;
 import com.example.jdbc.dao.domain.Book;
@@ -26,7 +26,7 @@ public class BookDaoImplTest {
 
     // Marks this method as a JUnit test case
     @Test
-    public void verifyBookDaoGeneratesCorrectSql(){
+    public void verifyCreateBookDaoGeneratesCorrectSql(){
         Book book = Book.builder()
                 .isbn("ae1")
                 .title("Wings of Fire")
