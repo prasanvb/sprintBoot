@@ -39,6 +39,11 @@ public class BookDaoImpl implements BookDao {
         return findOneBookQueryResult.stream().findFirst();
     }
 
+    @Override
+    public List<Book> find() {
+        return jdbcTemplate.query("SELECT isbn, title, author_id FROM books", new BookRowMapper());
+    }
+
     // Static inner class that implements RowMapper to convert a database result set row into a Book object
     public static class BookRowMapper implements RowMapper<Book> {
 

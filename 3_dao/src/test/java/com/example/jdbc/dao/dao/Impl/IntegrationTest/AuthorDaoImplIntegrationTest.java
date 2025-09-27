@@ -50,7 +50,7 @@ public class AuthorDaoImplIntegrationTest {
     }
 
     @Test
-    public void testThatMultipleAuthorCanBeCreatedAndQueryed() {
+    public void testThatManyAuthorCanBeCreatedAndQueryed() {
         Author author = buildAuthor(ID, NAME, AGE);
         authorDaoImpl.create(author);
 

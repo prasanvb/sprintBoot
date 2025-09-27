@@ -45,7 +45,7 @@ public class BookDaoImplTest {
     }
 
     @Test
-    public void verifyFindOneAuthorDaoGeneratesCorrectSql(){
+    public void verifyFindOneBookDaoGeneratesCorrectSql(){
         // Call the findOne method with the ISBN to retrieve a single book
         bookDaoImpl.findOne(ISBN);
 
@@ -59,5 +59,13 @@ public class BookDaoImplTest {
                 ArgumentMatchers.<BookDaoImpl.BookRowMapper>any(),
                 eq(ISBN)
         );
+    }
+
+    @Test
+    public void verifyFindManyBookDaoGeneratesCorrectSql(){
+        bookDaoImpl.find();
+
+        verify(jdbcTemplate).query(eq("SELECT isbn, title, author_id FROM books"),
+                ArgumentMatchers.<BookDaoImpl.BookRowMapper>any());
     }
 }

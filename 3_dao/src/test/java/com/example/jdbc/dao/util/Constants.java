@@ -24,7 +24,7 @@ public final class Constants {
     public static final Long AUTHOR_ID = ID;
 
     // BOOK 2
-    public static final String ISBN_2 = "1000-tfl-999";
+    public static final String ISBN_2 = "1000-tfl-998";
     public static final String TITLE_2 = "My Journey: Transforming Dreams Into Actions";
 }
 

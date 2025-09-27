@@ -8,8 +8,10 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.util.List;
 import java.util.Optional;
 
 import static com.example.jdbc.dao.util.Constants.*;
@@ -19,6 +21,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 @ExtendWith(SpringExtension.class)
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 public class BookDaoImplIntegrationTest {
     private final AuthorDaoImpl authDaoImpl;
     private final BookDaoImpl bookDaoImpl;
@@ -31,8 +34,8 @@ public class BookDaoImplIntegrationTest {
 
     @Test
     public void testThatBookCanBeCreatedAndQueryed(){
-        // NOTE: ID is incremented by 1 to prevent test failure
-        Author author = buildAuthor(ID+1, NAME, AGE);
+        // NOTE: If DirtiesContext not used the ID should be incremented by 1 to prevent test failure
+        Author author = buildAuthor(ID, NAME, AGE);
         authDaoImpl.create(author);
         Book book = buildBook(ISBN, TITLE, AUTHOR_ID);
         book.setAuthorId(author.getId());
@@ -42,5 +45,21 @@ public class BookDaoImplIntegrationTest {
 
         assertThat(result).isPresent();
         assertThat(result.get()).isEqualTo(book);
+    }
+
+    @Test
+    public void testThatManyBookCanBeCreatedAndQueryed(){
+        Author author = buildAuthor(ID, NAME, AGE);
+        authDaoImpl.create(author);
+        Book book = buildBook(ISBN, TITLE, AUTHOR_ID);
+        bookDaoImpl.create(book);
+
+        Book book_2 = buildBook(ISBN_2, TITLE_2, AUTHOR_ID);
+        bookDaoImpl.create(book_2);
+
+        List<Book> result = bookDaoImpl.find();
+
+        assertThat(result).hasSize(2);
+
     }
 }
