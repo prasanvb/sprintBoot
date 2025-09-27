@@ -18,14 +18,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 @ExtendWith(SpringExtension.class)
-public class AuthorDaoImplIntTest {
+public class AuthorDaoImplIntegrationTest {
     private final AuthorDaoImpl authorDaoImpl;
 
     @Autowired
-    public AuthorDaoImplIntTest(AuthorDaoImpl authorDaoImpl) {
+    public AuthorDaoImplIntegrationTest(AuthorDaoImpl authorDaoImpl) {
         this.authorDaoImpl = authorDaoImpl;
     }
-
 
     @Test
     public void testThatAuthorCanBeCreatedAndQueryed(){
@@ -36,6 +35,5 @@ public class AuthorDaoImplIntTest {
 
         assertThat(result).isPresent();
         assertThat(result.get()).isEqualTo(author);
-
     }
 }

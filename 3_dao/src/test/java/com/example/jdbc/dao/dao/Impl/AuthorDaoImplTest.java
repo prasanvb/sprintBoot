@@ -48,7 +48,7 @@ public class AuthorDaoImplTest {
     @Test
     public void verifyFindOneAuthorDaoGeneratesCorrectSql(){
         // Execute the findOne method with a test ID (1L) to trigger database interaction
-        authorDaoImpl.findOne(1L);
+        authorDaoImpl.findOne(ID);
 
         // Verify that JdbcTemplate.query was called exactly once with the expected parameters:
         // - ArgumentMatchers.<AuthorDaoImpl.AuthorRowMapper>any(): Matches any instance of AuthorRowMapper (since it's created fresh each time)

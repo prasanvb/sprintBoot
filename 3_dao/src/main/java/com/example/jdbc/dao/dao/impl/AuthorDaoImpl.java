@@ -7,6 +7,7 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
@@ -47,8 +48,13 @@ public class AuthorDaoImpl implements AuthorDao {
 
         @Override
         public Author mapRow(ResultSet rs, int rowNum) throws SQLException {
-            System.out.println("Author mapRow - Result Set: "+rs);
-            System.out.println("Author mapRow - Row number: "+rowNum);
+            // Resultset Metadata and print colum headers
+            System.out.println("Author mapRow - Result Set Meta data");
+            ResultSetMetaData meta = rs.getMetaData();
+            for (int i = 1; i <= meta.getColumnCount(); i++) {
+                System.out.print(meta.getColumnName(i) + "\n");
+            }
+
             // Map the current row of the result set to an Author instance using the builder pattern
             // Extract the column value as a String from the respective columns and assigned to the corresponding Author field
             // Build and return the Book object with these values
