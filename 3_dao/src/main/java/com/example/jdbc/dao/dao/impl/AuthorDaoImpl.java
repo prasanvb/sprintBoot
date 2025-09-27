@@ -42,18 +42,23 @@ public class AuthorDaoImpl implements AuthorDao {
         return findOneQueryResults.stream().findFirst();
     }
 
-     public static class AuthorRowMapper implements RowMapper<Author>{
+    @Override
+    public List<Author> find() {
+        return jdbcTemplate.query("SELECT id, name, age FROM authors", new AuthorRowMapper());
+    }
+
+    public static class AuthorRowMapper implements RowMapper<Author>{
         // Static inner class that implements RowMapper to convert database result set rows into Author domain objects
         // RowMapper is used by JdbcTemplate.query() to transform each SQL result row into a Java object
 
         @Override
         public Author mapRow(ResultSet rs, int rowNum) throws SQLException {
             // Resultset Metadata and print colum headers
-            System.out.println("Author mapRow - Result Set Meta data");
-            ResultSetMetaData meta = rs.getMetaData();
-            for (int i = 1; i <= meta.getColumnCount(); i++) {
-                System.out.print(meta.getColumnName(i) + "\n");
-            }
+//            System.out.println("Author mapRow - Result Set Meta data");
+//            ResultSetMetaData meta = rs.getMetaData();
+//            for (int i = 1; i <= meta.getColumnCount(); i++) {
+//                System.out.print(meta.getColumnName(i) + "\n");
+//            }
 
             // Map the current row of the result set to an Author instance using the builder pattern
             // Extract the column value as a String from the respective columns and assigned to the corresponding Author field

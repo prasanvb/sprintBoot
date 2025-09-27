@@ -57,6 +57,15 @@ public class AuthorDaoImplTest {
                 ArgumentMatchers.<AuthorDaoImpl.AuthorRowMapper>any(),  // Accepts any AuthorRowMapper instance
                 eq(ID)
         );
+    }
 
+    @Test
+    public void verifyFindManyAuthorDaoGeneratesCorrectSql(){
+        authorDaoImpl.find();
+
+        verify(jdbcTemplate).query(
+          eq("SELECT id, name, age FROM authors"),
+          ArgumentMatchers.<AuthorDaoImpl.AuthorRowMapper>any()
+        );
     }
 }
