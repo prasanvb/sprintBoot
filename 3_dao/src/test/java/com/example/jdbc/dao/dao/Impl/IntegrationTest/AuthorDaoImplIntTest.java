@@ -18,12 +18,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 @ExtendWith(SpringExtension.class)
-public class AuthorDaoImplIntTests {
-
+public class AuthorDaoImplIntTest {
     private final AuthorDaoImpl authorDaoImpl;
 
     @Autowired
-    public AuthorDaoImplIntTests(AuthorDaoImpl authorDaoImpl) {
+    public AuthorDaoImplIntTest(AuthorDaoImpl authorDaoImpl) {
         this.authorDaoImpl = authorDaoImpl;
     }
 
