@@ -42,10 +42,11 @@ public class BookDaoImpl implements BookDao {
 
         @Override
         public Book mapRow(ResultSet rs, int rowNum) throws SQLException {
+            System.out.println("Author mapRow - Result Set: "+rs);
+            System.out.println("Author mapRow - Row number: "+rowNum);
+
             // Map the current row of the result set to a Book instance using the builder pattern
-            // Extract the isbn as a String from the "isbn" column
-            // Extract the title as a String from the "title" column
-            // Extract the author_id as a Long from the "author_id" column
+            // Extract the column value as a String from the respective columns and assigned to the corresponding Author field
             // Build and return the Book object with these values
             return Book.builder()
                     .isbn(rs.getString("isbn"))

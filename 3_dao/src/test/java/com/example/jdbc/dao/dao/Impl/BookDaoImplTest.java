@@ -10,6 +10,8 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.jdbc.core.JdbcTemplate;
 
+import static com.example.jdbc.dao.util.Constants.*;
+import static com.example.jdbc.dao.util.TestDataUtil.buildBook;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 
@@ -28,10 +30,7 @@ public class BookDaoImplTest {
     // Marks this method as a JUnit test case
     @Test
     public void verifyCreateBookDaoGeneratesCorrectSql(){
-        Book book = Book.builder()
-                .isbn("ae1")
-                .title("Wings of Fire")
-                .authorId(1L).build();
+        Book book = buildBook(ISBN, TITLE, AUTHOR_ID);
 
         // Execute the create method on the DAO implementation being tested
         bookDaoImpl.create(book);
@@ -39,16 +38,16 @@ public class BookDaoImplTest {
         // Verify that the JdbcTemplate.update was called with the expected SQL insert statement and parameters
         verify(jdbcTemplate).update(
                 eq("INSERT INTO books (isbn, title, author_id) values (?,?,?)"),
-                eq("ae1"),
-                eq("Wings of Fire"),
-                eq(1L)
+                eq(ISBN),
+                eq(TITLE),
+                eq(AUTHOR_ID)
         );
     }
 
     @Test
     public void verifyFindOneAuthorDaoGeneratesCorrectSql(){
-        // Call the findOne method with the ISBN "ae1" to retrieve a single book
-        bookDaoImpl.findOne("ae1");
+        // Call the findOne method with the ISBN to retrieve a single book
+        bookDaoImpl.findOne(ISBN);
 
         // Verify that JdbcTemplate.query is called with the expected SQL query,
         // which selects isbn, title, and author_id from the books table where the isbn matches,
@@ -58,7 +57,7 @@ public class BookDaoImplTest {
                 // Use any instance of BookDaoImpl.BookRowMapper, a custom row mapper class
                 // that maps the database result set rows to Book domain objects
                 ArgumentMatchers.<BookDaoImpl.BookRowMapper>any(),
-                eq("ae1")
+                eq(ISBN)
         );
     }
 }

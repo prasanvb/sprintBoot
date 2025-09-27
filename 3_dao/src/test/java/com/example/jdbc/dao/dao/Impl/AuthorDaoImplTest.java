@@ -10,6 +10,8 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.jdbc.core.JdbcTemplate;
 
+import static com.example.jdbc.dao.util.Constants.*;
+import static com.example.jdbc.dao.util.TestDataUtil.buildAuthor;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 
@@ -29,11 +31,7 @@ public class AuthorDaoImplTest {
     @Test
     public void verifyCreateAuthorDaoGeneratesCorrectSql(){
         // Create a test Author object using the Builder pattern with sample data
-        Author author = Author.builder()
-                            .id(1L)
-                            .name("APJ Kalam")
-                            .age(100)
-                            .build();
+        Author author = buildAuthor(ID, NAME, AGE);
 
         // Execute the create method on the DAO implementation being tested
         authorDaoImpl.create(author);
@@ -41,9 +39,9 @@ public class AuthorDaoImplTest {
         // Verify that the JdbcTemplate.update was called with the expected SQL insert statement and parameters
         verify(jdbcTemplate).update(
                 eq("INSERT INTO authors (id, name, age) VALUES (?,?,?)"),
-                eq(1L),
-                eq("APJ Kalam"),
-                eq(100)
+                eq(ID),
+                eq(NAME),
+                eq(AGE)
         );
     }
 
@@ -57,7 +55,7 @@ public class AuthorDaoImplTest {
         verify(jdbcTemplate).query(
                 eq("SELECT id, name, age FROM authors WHERE id = ? LIMIT 1"),
                 ArgumentMatchers.<AuthorDaoImpl.AuthorRowMapper>any(),  // Accepts any AuthorRowMapper instance
-                eq(1L)
+                eq(ID)
         );
 
     }

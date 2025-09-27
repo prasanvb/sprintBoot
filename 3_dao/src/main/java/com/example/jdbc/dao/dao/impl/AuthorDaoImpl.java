@@ -4,12 +4,14 @@ import com.example.jdbc.dao.dao.AuthorDao;
 import com.example.jdbc.dao.domain.Author;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Component;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
+@Component
 public class AuthorDaoImpl implements AuthorDao {
     private final JdbcTemplate jdbcTemplate;
 
@@ -45,8 +47,11 @@ public class AuthorDaoImpl implements AuthorDao {
 
         @Override
         public Author mapRow(ResultSet rs, int rowNum) throws SQLException {
-            // Maps a single row from the ResultSet to an Author instance using the builder pattern
-            // Each column value is extracted by name and assigned to the corresponding Author field
+            System.out.println("Author mapRow - Result Set: "+rs);
+            System.out.println("Author mapRow - Row number: "+rowNum);
+            // Map the current row of the result set to an Author instance using the builder pattern
+            // Extract the column value as a String from the respective columns and assigned to the corresponding Author field
+            // Build and return the Book object with these values
             return Author.builder()
                     .id(rs.getLong("id"))     // Maps the 'id' column (Long) to the Author's id field
                     .name(rs.getString("name"))  // Maps the 'name' column (String) to the Author's name field
