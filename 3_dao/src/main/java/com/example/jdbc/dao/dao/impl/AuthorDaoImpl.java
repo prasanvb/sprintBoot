@@ -47,6 +47,13 @@ public class AuthorDaoImpl implements AuthorDao {
         return jdbcTemplate.query("SELECT id, name, age FROM authors", new AuthorRowMapper());
     }
 
+    @Override
+    public void update(Author author, Long id){
+        jdbcTemplate.update(
+                "UPDATE authors SET id = ?, name = ?, age = ? WHERE id = ?",
+                author.getId(), author.getName(), author.getAge(), id);
+    }
+
     public static class AuthorRowMapper implements RowMapper<Author>{
         // Static inner class that implements RowMapper to convert database result set rows into Author domain objects
         // RowMapper is used by JdbcTemplate.query() to transform each SQL result row into a Java object

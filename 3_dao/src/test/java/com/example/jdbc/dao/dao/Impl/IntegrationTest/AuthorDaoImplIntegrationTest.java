@@ -66,4 +66,21 @@ public class AuthorDaoImplIntegrationTest {
 
         assertThat(result).hasSize(3).containsExactly(author, author_2, author_3);
     }
+
+    @Test
+    public void testThatAuthorCanBeUpdated(){
+        Author author = buildAuthor(ID, NAME, AGE);
+        authorDaoImpl.create(author);
+
+        author.setName("APJ");
+        authorDaoImpl.update(author, ID);
+
+        Optional<Author> result = authorDaoImpl.findOne(author.getId());
+
+        System.out.println(result);
+
+        assertThat(result).isPresent();
+        assertThat(result.get()).isEqualTo(author);
+
+    }
 }
