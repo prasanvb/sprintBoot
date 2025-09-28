@@ -1,6 +1,7 @@
 package com.example.jdbc.dao.dao.Impl;
 
 import com.example.jdbc.dao.dao.impl.AuthorDaoImpl;
+import com.example.jdbc.dao.dao.impl.RowMapper.AuthorRowMapper;
 import com.example.jdbc.dao.domain.Author;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -54,7 +55,7 @@ public class AuthorDaoImplTest {
         // - ArgumentMatchers.<AuthorDaoImpl.AuthorRowMapper>any(): Matches any instance of AuthorRowMapper (since it's created fresh each time)
         verify(jdbcTemplate).query(
                 eq("SELECT id, name, age FROM authors WHERE id = ? LIMIT 1"),
-                ArgumentMatchers.<AuthorDaoImpl.AuthorRowMapper>any(),  // Accepts any AuthorRowMapper instance
+                ArgumentMatchers.<AuthorRowMapper>any(),  // Accepts any AuthorRowMapper instance
                 eq(ID)
         );
     }
@@ -65,7 +66,7 @@ public class AuthorDaoImplTest {
 
         verify(jdbcTemplate).query(
           eq("SELECT id, name, age FROM authors"),
-          ArgumentMatchers.<AuthorDaoImpl.AuthorRowMapper>any()
+          ArgumentMatchers.<AuthorRowMapper>any()
         );
     }
 
