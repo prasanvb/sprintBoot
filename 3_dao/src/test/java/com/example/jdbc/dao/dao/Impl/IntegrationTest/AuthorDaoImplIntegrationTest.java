@@ -44,7 +44,7 @@ public class AuthorDaoImplIntegrationTest {
     public void testThatNoAuthorCreatedAndQueryed() {
         List<Author> result = authorDaoImpl.find();
 
-        System.out.println(result);
+
 
         assertThat(result).isEmpty();
     }

@@ -68,4 +68,20 @@ public class BookDaoImplTest {
         verify(jdbcTemplate).query(eq("SELECT isbn, title, author_id FROM books"),
                 ArgumentMatchers.<BookDaoImpl.BookRowMapper>any());
     }
+
+    @Test
+    public void verifyUpdateBookDaoGeneratesCorrectSql(){
+        Book book = buildBook(ISBN_2, TITLE_2, AUTHOR_ID);
+
+        bookDaoImpl.update(book, ISBN_2);
+
+        // Verify that the JdbcTemplate.update was called with the expected SQL insert statement and parameters
+        verify(jdbcTemplate).update(
+                eq("UPDATE books SET isbn = ? , title = ? , author_id = ? WHERE isbn = ?"),
+                eq(ISBN_2),
+                eq(TITLE_2),
+                eq(AUTHOR_ID),
+                eq(ISBN_2)
+        );
+    }
 }

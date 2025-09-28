@@ -51,7 +51,11 @@ public class AuthorDaoImpl implements AuthorDao {
     public void update(Author author, Long id){
         jdbcTemplate.update(
                 "UPDATE authors SET id = ?, name = ?, age = ? WHERE id = ?",
-                author.getId(), author.getName(), author.getAge(), id);
+                author.getId(),
+                author.getName(),
+                author.getAge(),
+                id
+        );
     }
 
     public static class AuthorRowMapper implements RowMapper<Author>{
