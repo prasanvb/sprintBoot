@@ -33,7 +33,7 @@ public class BookDaoImplIntegrationTest {
     }
 
     @Test
-    public void testThatBookCanBeCreatedAndQueryed(){
+    public void testThatBookCanBeCreatedAndQueryed() {
         // NOTE: If DirtiesContext not used the ID should be incremented by 1 to prevent test failure
         Author author = buildAuthor(ID, NAME, AGE);
         authDaoImpl.create(author);
@@ -48,14 +48,14 @@ public class BookDaoImplIntegrationTest {
     }
 
     @Test
-    public void testThatNoBookCreatedAndQueryed(){
+    public void testThatNoBookCreatedAndQueryed() {
         List<Book> result = bookDaoImpl.find();
 
         assertThat(result).isEmpty();
     }
 
     @Test
-    public void testThatManyBookCanBeCreatedAndQueryed(){
+    public void testThatManyBookCanBeCreatedAndQueryed() {
         Author author = buildAuthor(ID, NAME, AGE);
         authDaoImpl.create(author);
         Book book = buildBook(ISBN, TITLE, AUTHOR_ID);
@@ -71,7 +71,7 @@ public class BookDaoImplIntegrationTest {
     }
 
     @Test
-    public void testThatBookCanBeUpdated(){
+    public void testThatBookCanBeUpdated() {
         Author author = buildAuthor(ID, NAME, AGE);
         authDaoImpl.create(author);
 
@@ -90,7 +90,7 @@ public class BookDaoImplIntegrationTest {
     }
 
     @Test
-    public void testThatBookCanBeDeleted(){
+    public void testThatBookCanBeDeleted() {
         Author author = buildAuthor(ID, NAME, AGE);
         authDaoImpl.create(author);
 

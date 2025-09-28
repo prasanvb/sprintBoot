@@ -4,12 +4,8 @@ import com.example.jdbc.dao.dao.AuthorDao;
 import com.example.jdbc.dao.dao.impl.RowMapper.AuthorRowMapper;
 import com.example.jdbc.dao.domain.Author;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
-import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
@@ -51,7 +47,7 @@ public class AuthorDaoImpl implements AuthorDao {
     }
 
     @Override
-    public void update(Author author, Long id){
+    public void update(Author author, Long id) {
         jdbcTemplate.update(
                 "UPDATE authors SET id = ?, name = ?, age = ? WHERE id = ?",
                 author.getId(),
@@ -62,7 +58,7 @@ public class AuthorDaoImpl implements AuthorDao {
     }
 
     @Override
-    public void delete(Long id){
+    public void delete(Long id) {
         jdbcTemplate.update(
                 "DELETE FROM authors WHERE id = ?",
                 id

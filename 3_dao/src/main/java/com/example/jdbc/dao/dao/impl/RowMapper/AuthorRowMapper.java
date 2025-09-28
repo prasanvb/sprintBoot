@@ -1,7 +1,6 @@
 package com.example.jdbc.dao.dao.impl.RowMapper;
 
 import com.example.jdbc.dao.domain.Author;
-import org.springframework.context.annotation.Bean;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 

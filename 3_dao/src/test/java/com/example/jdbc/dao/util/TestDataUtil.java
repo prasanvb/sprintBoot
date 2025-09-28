@@ -6,7 +6,8 @@ import com.example.jdbc.dao.domain.Book;
 public class TestDataUtil {
 
     // Private constructor to prevent instantiation
-    private TestDataUtil(){}
+    private TestDataUtil() {
+    }
 
     public static Author buildAuthor(Long id, String name, int age) {
         return Author.builder()
@@ -16,7 +17,7 @@ public class TestDataUtil {
                 .build();
     }
 
-    public static Book buildBook(String isbn, String title, Long authorId){
+    public static Book buildBook(String isbn, String title, Long authorId) {
         return Book.builder()
                 .isbn(isbn)
                 .title(title)

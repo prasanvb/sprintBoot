@@ -31,7 +31,7 @@ public class AuthorDaoImplIntegrationTest {
     }
 
     @Test
-    public void testThatAuthorCanBeCreatedAndQueryed(){
+    public void testThatAuthorCanBeCreatedAndQueryed() {
         Author author = buildAuthor(ID, NAME, AGE);
 
         authorDaoImpl.create(author);
@@ -46,8 +46,6 @@ public class AuthorDaoImplIntegrationTest {
     @Test
     public void testThatNoAuthorCreatedAndQueryed() {
         List<Author> result = authorDaoImpl.find();
-
-
 
         assertThat(result).isEmpty();
     }
@@ -71,7 +69,7 @@ public class AuthorDaoImplIntegrationTest {
     }
 
     @Test
-    public void testThatAuthorCanBeUpdated(){
+    public void testThatAuthorCanBeUpdated() {
         Author author = buildAuthor(ID, NAME, AGE);
         authorDaoImpl.create(author);
 

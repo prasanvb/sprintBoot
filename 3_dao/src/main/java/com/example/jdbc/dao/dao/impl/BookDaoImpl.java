@@ -55,7 +55,7 @@ public class BookDaoImpl implements BookDao {
     }
 
     @Override
-    public void delete(String isbn){
+    public void delete(String isbn) {
         jdbcTemplate.update("DELETE FROM books WHERE isbn = ?", isbn);
     }
 
@@ -64,8 +64,8 @@ public class BookDaoImpl implements BookDao {
 
         @Override
         public Book mapRow(ResultSet rs, int rowNum) throws SQLException {
-            System.out.println("Author mapRow - Result Set: "+rs);
-            System.out.println("Author mapRow - Row number: "+rowNum);
+            System.out.println("Author mapRow - Result Set: " + rs);
+            System.out.println("Author mapRow - Row number: " + rowNum);
 
             // Map the current row of the result set to a Book instance using the builder pattern
             // Extract the column value as a String from the respective columns and assigned to the corresponding Author field

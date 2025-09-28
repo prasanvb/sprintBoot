@@ -29,7 +29,7 @@ public class BookDaoImplTest {
 
     // Marks this method as a JUnit test case
     @Test
-    public void verifyCreateBookMethodInDaoGeneratesCorrectSql(){
+    public void verifyCreateBookMethodInDaoGeneratesCorrectSql() {
         Book book = buildBook(ISBN, TITLE, AUTHOR_ID);
 
         // Execute the create method on the DAO implementation being tested
@@ -45,7 +45,7 @@ public class BookDaoImplTest {
     }
 
     @Test
-    public void verifyFindOneBookMethodInDaoGeneratesCorrectSql(){
+    public void verifyFindOneBookMethodInDaoGeneratesCorrectSql() {
         // Call the findOne method with the ISBN to retrieve a single book
         bookDaoImpl.findOne(ISBN);
 
@@ -62,7 +62,7 @@ public class BookDaoImplTest {
     }
 
     @Test
-    public void verifyFindManyBooMethodInDaoGeneratesCorrectSql(){
+    public void verifyFindManyBooMethodInDaoGeneratesCorrectSql() {
         bookDaoImpl.find();
 
         verify(jdbcTemplate).query(eq("SELECT isbn, title, author_id FROM books"),
@@ -70,7 +70,7 @@ public class BookDaoImplTest {
     }
 
     @Test
-    public void verifyUpdateBookDaoMethodInGeneratesCorrectSql(){
+    public void verifyUpdateBookDaoMethodInGeneratesCorrectSql() {
         Book book = buildBook(ISBN_2, TITLE_2, AUTHOR_ID);
 
         bookDaoImpl.update(book, ISBN_2);
@@ -86,7 +86,7 @@ public class BookDaoImplTest {
     }
 
     @Test
-    public void verifyDeleteBookDaoMethodInGeneratesCorrectSql(){
+    public void verifyDeleteBookDaoMethodInGeneratesCorrectSql() {
         Book book = buildBook(ISBN, TITLE, AUTHOR_ID);
         bookDaoImpl.create(book);
 
