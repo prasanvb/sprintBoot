@@ -29,7 +29,7 @@ public class AuthorDaoImplTest {
 
     // Marks this method as a JUnit test case
     @Test
-    public void verifyCreateAuthorDaoGeneratesCorrectSql(){
+    public void verifyCreateAuthorMethodInDaoGeneratesCorrectSql(){
         // Create a test Author object using the Builder pattern with sample data
         Author author = buildAuthor(ID, NAME, AGE);
 
@@ -46,7 +46,7 @@ public class AuthorDaoImplTest {
     }
 
     @Test
-    public void verifyFindOneAuthorDaoGeneratesCorrectSql(){
+    public void verifyFindOneAuthorMethodInDaoGeneratesCorrectSql(){
         // Execute the findOne method with a test ID (1L) to trigger database interaction
         authorDaoImpl.findOne(ID);
 
@@ -60,7 +60,7 @@ public class AuthorDaoImplTest {
     }
 
     @Test
-    public void verifyFindManyAuthorDaoGeneratesCorrectSql(){
+    public void verifyFindManyAuthorMethodInDaoGeneratesCorrectSql(){
         authorDaoImpl.find();
 
         verify(jdbcTemplate).query(
@@ -70,7 +70,7 @@ public class AuthorDaoImplTest {
     }
 
     @Test
-    public void verifyUpdateAuthorDaoGeneratesCorrectSql(){
+    public void verifyUpdateAuthorMethodInDaoGeneratesCorrectSql(){
         Author author = buildAuthor(ID_3, NAME, AGE);
 
         authorDaoImpl.update(author, ID_3);
@@ -82,5 +82,17 @@ public class AuthorDaoImplTest {
                 eq(AGE),
                 eq(ID_3)
                 );
+    }
+
+    @Test
+    public void verifyDeleteAuthorMethodInDaoGeneratesCorrectSql(){
+        Author author = buildAuthor(ID, NAME, AGE);
+        authorDaoImpl.create(author);
+
+        authorDaoImpl.delete(ID);
+
+        verify(jdbcTemplate).update(eq("DELETE FROM authors WHERE id = ?"), eq(ID));
+
+
     }
 }

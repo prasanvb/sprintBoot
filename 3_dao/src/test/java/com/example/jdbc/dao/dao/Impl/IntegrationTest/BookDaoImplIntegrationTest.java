@@ -74,20 +74,36 @@ public class BookDaoImplIntegrationTest {
     public void testThatBookCanBeUpdated(){
         Author author = buildAuthor(ID, NAME, AGE);
         authDaoImpl.create(author);
+
         Book book = buildBook(ISBN, TITLE, AUTHOR_ID);
-        System.out.println(book);
         bookDaoImpl.create(book);
 
-        book.setTitle(TITLE_2);
+        System.out.println(book);
 
+        book.setTitle(TITLE_2);
         bookDaoImpl.update(book, ISBN);
 
         Optional<Book> result = bookDaoImpl.findOne(book.getIsbn());
 
-        assertThat(result).isPresent();
-
+        assertThat(result).isPresent().get().isEqualTo(book);
         System.out.println(result.get());
-
-        assertThat(result.get()).isEqualTo(book);
     }
+
+    @Test
+    public void testThatBookCanBeDeleted(){
+        Author author = buildAuthor(ID, NAME, AGE);
+        authDaoImpl.create(author);
+
+        Book book = buildBook(ISBN, TITLE, AUTHOR_ID);
+        bookDaoImpl.create(book);
+
+        bookDaoImpl.delete(ISBN);
+
+        Optional<Book> result = bookDaoImpl.findOne(book.getIsbn());
+
+        assertThat(result).isEmpty();
+
+
+    }
+
 }

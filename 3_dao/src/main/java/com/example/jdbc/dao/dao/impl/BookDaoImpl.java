@@ -54,6 +54,11 @@ public class BookDaoImpl implements BookDao {
         );
     }
 
+    @Override
+    public void delete(String isbn){
+        jdbcTemplate.update("DELETE FROM books WHERE isbn = ?", isbn);
+    }
+
     // Static inner class that implements RowMapper to convert a database result set row into a Book object
     public static class BookRowMapper implements RowMapper<Book> {
 

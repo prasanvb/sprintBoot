@@ -58,6 +58,14 @@ public class AuthorDaoImpl implements AuthorDao {
         );
     }
 
+    @Override
+    public void delete(Long id){
+        jdbcTemplate.update(
+                "DELETE FROM authors WHERE id = ?",
+                id
+        );
+    }
+
     public static class AuthorRowMapper implements RowMapper<Author>{
         // Static inner class that implements RowMapper to convert database result set rows into Author domain objects
         // RowMapper is used by JdbcTemplate.query() to transform each SQL result row into a Java object
