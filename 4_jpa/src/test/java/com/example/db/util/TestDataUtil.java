@@ -1,7 +1,7 @@
-package com.example.jdbc.dao.util;
+package com.example.db.util;
 
-import com.example.jdbc.dao.domain.Author;
-import com.example.jdbc.dao.domain.Book;
+import com.example.db.domain.Author;
+import com.example.db.domain.Book;
 
 public class TestDataUtil {
 

@@ -1,4 +1,4 @@
-package com.example.jdbc.dao.domain;
+package com.example.db.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

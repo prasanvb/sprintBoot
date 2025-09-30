@@ -1,4 +1,4 @@
-package com.example.jdbc.dao.util;
+package com.example.db.util;
 
 public final class Constants {
     // AUTHOR 1
