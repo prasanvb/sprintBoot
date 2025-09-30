@@ -1,7 +1,6 @@
 package com.example.jdbc.dao.dao.Impl.IntegrationTest;
 
 import com.example.jdbc.dao.dao.impl.AuthorDaoImpl;
-import com.example.jdbc.dao.dao.impl.RowMapper.AuthorRowMapper;
 import com.example.jdbc.dao.domain.Author;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -22,12 +21,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 public class AuthorDaoImplIntegrationTest {
     private final AuthorDaoImpl authorDaoImpl;
-    private final AuthorRowMapper authorRowMapper;
 
     @Autowired
-    public AuthorDaoImplIntegrationTest(AuthorDaoImpl authorDaoImpl, AuthorRowMapper authorRowMapper) {
+    public AuthorDaoImplIntegrationTest(AuthorDaoImpl authorDaoImpl) {
         this.authorDaoImpl = authorDaoImpl;
-        this.authorRowMapper = authorRowMapper;
     }
 
     @Test
