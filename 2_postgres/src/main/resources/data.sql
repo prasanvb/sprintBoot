@@ -1,6 +1,6 @@
-INSERT INTO widgets (id, name, purpose) VALUES
-(1, 'Widget A', 'Used for testing postgres.'),
-(2, 'Widget B', 'Designed for entertainment.'),
-(3, 'Widget C', 'Enhances productivity.'),
-(4, 'Widget D', 'Perfect for outdoor activities.'),
-(5, 'Widget E', 'Improves overall well-being.');
+INSERT INTO widgets (name, purpose) VALUES
+('Widget A', 'Used for testing postgres.'),
+('Widget B', 'Designed for leisure.'),
+('Widget C', 'Enhances productivity.'),
+('Widget D', 'Perfect for outdoor activities.'),
+('Widget E', 'Improves overall well-being.');
