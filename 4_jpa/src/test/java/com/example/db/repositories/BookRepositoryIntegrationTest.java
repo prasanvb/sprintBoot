@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
 
+import java.util.List;
 import java.util.Optional;
 
 import static com.example.db.util.Constants.*;
@@ -42,63 +43,59 @@ public class BookRepositoryIntegrationTest {
         assertThat(result.get()).isEqualTo(book);
     }
 
-//    @Test
-//    public void testThatNoBookCreatedAndQueryed() {
-//        List<Book> result = bookDaoImpl.find();
-//
-//        assertThat(result).isEmpty();
-//    }
-//
-//    @Test
-//    public void testThatManyBookCanBeCreatedAndQueryed() {
-//        Author author = buildAuthor(ID, NAME, AGE);
-//        authDaoImpl.create(author);
-//        Book book = buildBook(ISBN, TITLE, AUTHOR_ID);
-//        bookDaoImpl.create(book);
-//
-//        Book book_2 = buildBook(ISBN_2, TITLE_2, AUTHOR_ID);
-//        bookDaoImpl.create(book_2);
-//
-//        List<Book> result = bookDaoImpl.find();
-//
-//        assertThat(result).hasSize(2);
-//
-//    }
-//
-//    @Test
-//    public void testThatBookCanBeUpdated() {
-//        Author author = buildAuthor(ID, NAME, AGE);
-//        authDaoImpl.create(author);
-//
-//        Book book = buildBook(ISBN, TITLE, AUTHOR_ID);
-//        bookDaoImpl.create(book);
-//
-//        System.out.println(book);
-//
-//        book.setTitle(TITLE_2);
-//        bookDaoImpl.update(book, ISBN);
-//
-//        Optional<Book> result = bookDaoImpl.findOne(book.getIsbn());
-//
-//        assertThat(result).isPresent().get().isEqualTo(book);
-//        System.out.println(result.get());
-//    }
-//
-//    @Test
-//    public void testThatBookCanBeDeleted() {
-//        Author author = buildAuthor(ID, NAME, AGE);
-//        authDaoImpl.create(author);
-//
-//        Book book = buildBook(ISBN, TITLE, AUTHOR_ID);
-//        bookDaoImpl.create(book);
-//
-//        bookDaoImpl.delete(ISBN);
-//
-//        Optional<Book> result = bookDaoImpl.findOne(book.getIsbn());
-//
-//        assertThat(result).isEmpty();
-//
-//
-//    }
+    @Test
+    public void testThatNoBookCreatedAndQueryed() {
+        Iterable<Book> result = bookRepository.findAll();
+
+        assertThat(result).isEmpty();
+    }
+
+    @Test
+    public void testThatManyBookCanBeCreatedAndQueryed() {
+        Author author = buildAuthor(null, NAME, AGE);
+        Author savedAuthor = authorRepository.save(author);
+
+        Book book = buildBook(ISBN, TITLE, savedAuthor);
+        Book book_2 = buildBook(ISBN_2, TITLE_2, author);
+
+        Iterable<Book> booksList = List.of(book, book_2);
+        Iterable<Book> result = bookRepository.saveAll(booksList);
+
+        assertThat(result).hasSize(2).containsExactly(book, book_2);
+    }
+
+    @Test
+    public void testThatBookCanBeUpdated() {
+        Author author = buildAuthor(null, NAME, AGE);
+        authorRepository.save(author);
+
+        Book book = buildBook(ISBN, TITLE, author);
+        bookRepository.save(book);
+
+        System.out.println("Original book values: " + book);
+
+        book.setTitle(TITLE_2);
+        bookRepository.save(book);
+
+        Optional<Book> result = bookRepository.findById(book.getIsbn());
+
+        assertThat(result).isPresent().get().isEqualTo(book);
+        System.out.println("Updated book values: " +  result.get());
+    }
+
+    @Test
+    public void testThatBookCanBeDeleted() {
+        Author author = buildAuthor(null, NAME, AGE);
+        authorRepository.save(author);
+
+        Book book = buildBook(ISBN, TITLE, author);
+        bookRepository.save(book);
+
+        bookRepository.deleteById(book.getIsbn());
+
+        Optional<Book> result = bookRepository.findById(book.getIsbn());
+
+        assertThat(result).isEmpty();
+    }
 
 }

@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
 
+import java.util.List;
 import java.util.Optional;
 
 import static com.example.db.util.Constants.*;
@@ -36,58 +37,59 @@ public class AuthorRepositoryIntegrationTest {
         assertThat(result.get()).isEqualTo(savedAuthor);
     }
 
-//    @Test
-//    public void testThatNoAuthorCreatedAndQueryed() {
-//        List<Author> result = authorDaoImpl.find();
-//
-//        assertThat(result).isEmpty();
-//    }
-//
-//    @Test
-//    public void testThatManyAuthorCanBeCreatedAndQueryed() {
-//        Author author = buildAuthor(ID, NAME, AGE);
-//        authorDaoImpl.create(author);
-//
-//        Author author_2 = buildAuthor(ID_2, NAME_2, AGE_2);
-//        authorDaoImpl.create(author_2);
-//
-//        Author author_3 = buildAuthor(ID_3, NAME_3, AGE_3);
-//        authorDaoImpl.create(author_3);
-//
-//        List<Author> result = authorDaoImpl.find();
-//
-//        System.out.println(result);
-//
-//        assertThat(result).hasSize(3).containsExactly(author, author_2, author_3);
-//    }
-//
-//    @Test
-//    public void testThatAuthorCanBeUpdated() {
-//        Author author = buildAuthor(ID, NAME, AGE);
-//        authorDaoImpl.create(author);
-//
-//        author.setName("APJ");
-//        authorDaoImpl.update(author, ID);
-//
-//        Optional<Author> result = authorDaoImpl.findOne(author.getId());
-//
-//        System.out.println(result);
-//
-//        assertThat(result).isPresent();
-//        assertThat(result.get()).isEqualTo(author);
-//
-//    }
-//
-//    @Test
-//    public void testThatAuthorCanBeDeleted() {
-//        Author author = buildAuthor(ID, NAME, AGE);
-//        authorDaoImpl.create(author);
-//
-//        authorDaoImpl.delete(ID);
-//
-//        Optional<Author> result = authorDaoImpl.findOne(author.getId());
-//
-//        assertThat(result).isEmpty();
-//    }
+    @Test
+    public void testThatNoAuthorCreatedAndQueryed() {
+        Iterable<Author> result = authorRepository.findAll();
+
+        assertThat(result).isEmpty();
+    }
+
+    @Test
+    public void testThatManyAuthorCanBeCreatedAndQueryed() {
+        Author author = buildAuthor(null, NAME, AGE);
+        Author author_2 = buildAuthor(null, NAME_2, AGE_2);
+        Author author_3 = buildAuthor(null, NAME_3, AGE_3);
+
+        Iterable<Author> authorList = List.of(author, author_2, author_3);
+        authorRepository.saveAll(authorList);
+
+        System.out.println(authorList);
+
+        Iterable<Author> result = authorRepository.findAll();
+
+        System.out.println(result);
+
+        assertThat(result).hasSize(3).containsExactly(author, author_2, author_3);
+    }
+
+    @Test
+    public void testThatAuthorCanBeUpdated() {
+        Author author = buildAuthor(null, NAME, AGE);
+        authorRepository.save(author);
+        System.out.println(author);
+
+        author.setName("APJ");
+        authorRepository.save(author);
+
+        Optional<Author> result = authorRepository.findById(author.getId());
+
+        System.out.println(result);
+
+        assertThat(result).isPresent();
+        assertThat(result.get()).isEqualTo(author);
+
+    }
+
+    @Test
+    public void testThatAuthorCanBeDeleted() {
+        Author author = buildAuthor(null, NAME, AGE);
+        authorRepository.save(author);
+
+        authorRepository.deleteById(author.getId());
+
+        Optional<Author> result = authorRepository.findById(author.getId());
+
+        assertThat(result).isEmpty();
+    }
 
 }
