@@ -1,4 +1,4 @@
-package com.example.jdbc.dao.dao.Impl;
+package com.example.jdbc.dao.dao.Impl.UnitTest;
 
 import com.example.jdbc.dao.dao.impl.AuthorDaoImpl;
 import com.example.jdbc.dao.dao.impl.RowMapper.AuthorRowMapper;
@@ -18,7 +18,7 @@ import static org.mockito.Mockito.verify;
 
 // Enables Mockito integration with JUnit 5 for automated mock management
 @ExtendWith(MockitoExtension.class)
-public class AuthorDaoImplTest {
+public class AuthorDaoImplUnitTest {
 
     // Mock object for JdbcTemplate to simulate database operations in tests
     @Mock
