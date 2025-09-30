@@ -17,11 +17,11 @@ public class TestDataUtil {
                 .build();
     }
 
-    public static Book buildBook(String isbn, String title, Long authorId) {
+    public static Book buildBook(String isbn, String title, Author author) {
         return Book.builder()
                 .isbn(isbn)
                 .title(title)
-                .authorId(authorId)
+                .authorId(author)
                 .build();
     }
 }
