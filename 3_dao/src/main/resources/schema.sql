@@ -1,8 +1,7 @@
 DROP TABLE IF EXISTS "books";
 DROP TABLE IF EXISTS "authors";
 
--- Create sequence for authors ID
--- CREATE SEQUENCE authors_id_seq;
+ CREATE SEQUENCE authors_id_seq;
 
 CREATE TABLE "authors" (
     "id" bigint DEFAULT nextval ('authors_id_seq') NOT NULL,
@@ -13,7 +12,7 @@ CREATE TABLE "authors" (
 );
 
 CREATE TABLE "books" (
-    "isbn" text NOT NULL,
+    "isbn" text NOT NULL UNIQUE,
     "title" text,
     "author_id" bigint,
     CONSTRAINT "book_pkey" PRIMARY KEY ("isbn"),
