@@ -1,5 +1,6 @@
 package com.spring.json.domain;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -17,5 +18,6 @@ public class Book {
 
     private String author;
 
+    @JsonProperty("year")
     private String yearPublished;
 }
