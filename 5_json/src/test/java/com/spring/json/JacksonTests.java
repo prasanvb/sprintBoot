@@ -33,4 +33,18 @@ public class JacksonTests {
         assert(result).equals(book);
 
     }
+
+    @Test
+    public void testObjectMapperCanCreateJavaObjectFromJsonWithIgnore() throws JsonProcessingException {
+        // NOTE: the "foo" property is unknown to the Book class
+        // but we have added the @JsonIgnoreProperties(ignoreUnknown = true) annotation
+        // to the Book class, so Jackson will ignore this property and not throw an exception.
+        final String json = "{\"foo\":\"bar\",\"isbn\":\"9780-lkw8-4785\",\"title\":\"Land of seven rivers\",\"author\":\"Sanjeev Sanyal\",\"year\":\"2012\"}";
+
+        Book result = objectMapper.readValue(json, Book.class);
+
+        Book book = Utils.getBookJavaObject();
+        assert(result).equals(book);
+
+    }
 }
