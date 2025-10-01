@@ -80,7 +80,7 @@ public class BookRepositoryIntegrationTest {
         Optional<Book> result = bookRepository.findById(book.getIsbn());
 
         assertThat(result).isPresent().get().isEqualTo(book);
-        System.out.println("Updated book values: " +  result.get());
+        System.out.println("Updated book values: " + result.get());
     }
 
     @Test

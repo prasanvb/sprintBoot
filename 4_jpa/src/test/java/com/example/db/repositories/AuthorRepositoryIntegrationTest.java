@@ -92,4 +92,47 @@ public class AuthorRepositoryIntegrationTest {
         assertThat(result).isEmpty();
     }
 
+    @Test
+    public void testThatGetAuthorWithAgeLessThan() {
+        Author author = buildAuthor(null, NAME, AGE);
+        Author author_2 = buildAuthor(null, NAME_2, AGE_2);
+        Author author_3 = buildAuthor(null, NAME_3, AGE_3);
+
+        Iterable<Author> authorList = List.of(author, author_2, author_3);
+        authorRepository.saveAll(authorList);
+
+        Iterable<Author> result = authorRepository.ageLessThan(50);
+
+        assertThat(result).hasSize(1).containsExactly(author_3);
+    }
+
+    @Test
+    public void testThatGetAuthorWithAgeGreaterThan() {
+        Author author = buildAuthor(null, NAME, AGE);
+        Author author_2 = buildAuthor(null, NAME_2, AGE_2);
+        Author author_3 = buildAuthor(null, NAME_3, AGE_3);
+
+        Iterable<Author> authorList = List.of(author, author_2, author_3);
+        authorRepository.saveAll(authorList);
+
+        Iterable<Author> result = authorRepository.findAuthorsAgeGreaterThan(50);
+
+        assertThat(result).hasSize(2).containsExactly(author, author_2);
+    }
+
+    @Test
+    public void testThatGetAuthorWithNameExists() {
+        Author author = buildAuthor(null, NAME, AGE);
+        Author author_2 = buildAuthor(null, NAME_2, AGE_2);
+        Author author_3 = buildAuthor(null, NAME_3, AGE_3);
+
+        Iterable<Author> authorList = List.of(author, author_2, author_3);
+        authorRepository.saveAll(authorList);
+
+        Iterable<Author> result = authorRepository.findAuthorByName(NAME);
+
+        System.out.println(result);
+        assertThat(result).hasSize(1).containsExactly(author);
+    }
+
 }
