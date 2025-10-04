@@ -2,13 +2,13 @@
 
 ### Hibernate auto DDL
 
-    ```editorconfig
+```editorconfig
     spring.jpa.hibernate.ddl-auto=update
-    ```
+```
 
 ### Entity Relationship Diagram
 
-    ```mermaid
+```mermaid
     erDiagram
         books {
             text isbn
@@ -23,7 +23,7 @@
         }
     
         books }o--|| author : "written_by"
-    ```
+```
 
 ### Spring Data JPA 
 
