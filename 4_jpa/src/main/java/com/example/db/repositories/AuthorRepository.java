@@ -5,6 +5,9 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
+// Note that the interface extends CrudRepository, which provides basic CRUD operations.
+// CurdRepository is a generic interface that takes two parameters: the entity type and the type of its primary key.
+// The Author entity is assumed to have a primary key of type Long.
 @Repository
 public interface AuthorRepository extends CrudRepository<Author, Long> {
 

@@ -26,12 +26,15 @@ public class AuthorRepositoryIntegrationTest {
 
     @Test
     public void testThatAuthorCanBeCreatedAndQueryed() {
+
         Author author = buildAuthor(null, NAME, AGE);
 
+        System.out.println("newly built author entity instance object : "+author);
+        // author is an entity, when saved the ID will be generated
         Author savedAuthor = authorRepository.save(author);
         Optional<Author> result = authorRepository.findById(savedAuthor.getId());
 
-        System.out.println(result);
+        System.out.println("Response is also author entity: " + result);
 
         assertThat(result).isPresent();
         assertThat(result.get()).isEqualTo(savedAuthor);
@@ -53,11 +56,11 @@ public class AuthorRepositoryIntegrationTest {
         Iterable<Author> authorList = List.of(author, author_2, author_3);
         authorRepository.saveAll(authorList);
 
-        System.out.println(authorList);
+        System.out.println("authorList : "+authorList);
 
         Iterable<Author> result = authorRepository.findAll();
 
-        System.out.println(result);
+        System.out.println("result : "+result);
 
         assertThat(result).hasSize(3).containsExactly(author, author_2, author_3);
     }

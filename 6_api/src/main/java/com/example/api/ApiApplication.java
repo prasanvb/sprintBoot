@@ -8,8 +8,8 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootApplication
-@EntityScan(basePackages = "com.example.db.domain")
-@EnableJpaRepositories(basePackages = "com.example.db.repositories")
+@EntityScan(basePackages = "com.example.api.domain")
+@EnableJpaRepositories(basePackages = "com.example.api.repositories")
 @Log
 public class ApiApplication implements CommandLineRunner {
 
@@ -19,6 +19,6 @@ public class ApiApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
-        log.info("...Spring Application using JPA...");
+        log.info("...Spring Boot API...");
     }
 }

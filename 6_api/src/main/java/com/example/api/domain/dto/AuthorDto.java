@@ -1,7 +1,5 @@
-package com.example.db.domain;
+package com.example.api.domain.dto;
 
-
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -11,12 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Entity // converts POJO to Entity
-@Table(name = "authors")
-public class Author {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "author_id_seq")
+public class AuthorDto {
     private Long id;
 
     private String name;

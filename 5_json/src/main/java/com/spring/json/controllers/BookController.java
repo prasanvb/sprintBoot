@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 /**
  * REST Controller demonstrating Jackson's automatic JSON-Java conversion in Spring MVC.
- * Spring Boot auto-configures MappingJackson2HttpMessageConverter for seamless serialization.
+ * Spring Boot autoconfigures MappingJackson2HttpMessageConverter for seamless serialization.
  */
 @RestController // Spring: Combines @Controller + @ResponseBody; all methods return JSON responses
 @Log // Lombok: Adds logging field 'log' using java.util.logging

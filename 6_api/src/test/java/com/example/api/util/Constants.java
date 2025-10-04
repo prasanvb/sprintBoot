@@ -1,4 +1,4 @@
-package com.example.db.util;
+package com.example.api.util;
 
 public final class Constants {
     // AUTHOR 1

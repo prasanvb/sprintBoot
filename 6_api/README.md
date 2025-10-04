@@ -16,13 +16,13 @@
             num author_id
         }
     
-        author {
+        authorEntity {
             num id
             text name
             num age
         }
     
-        books }o--|| author : "written_by"
+        books }o--|| authorEntity : "written_by"
 ```
 
 ### Spring Data JPA 
@@ -33,4 +33,4 @@
     Iterable<Author> ageLessThan(int age);
     ```
   
-- Custom methods and queries - [AuthorRepository](src/main/java/com/example/db/repositories/AuthorRepository.java)
+- Custom methods and queries - [AuthorRepository](src/main/java/com/example/api/repositories/AuthorRepository.java)
