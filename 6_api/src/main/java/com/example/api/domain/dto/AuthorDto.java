@@ -15,4 +15,6 @@ public class AuthorDto {
     private String name;
 
     private Integer age;
+
+    private String details;
 }
