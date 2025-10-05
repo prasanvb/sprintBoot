@@ -15,6 +15,9 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
+import static com.example.api.util.Constants.AGE;
+import static com.example.api.util.Constants.NAME;
+
 // Loads the full Spring application context for integration testing
 @SpringBootTest
 // Integrates JUnit 5 with the Spring TestContext Framework
@@ -26,7 +29,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 public class AuthorControllerIntegrationTests {
     // The field can be declared as `final` because it is only assigned once in the constructor and never reassigned elsewhere in the class.
     // Making it `final` enforces immutability, ensuring that its reference cannot be changed after construction, which is a good practice for dependency-injected fields.
-    private MockMvc mockMvc;
+    private final MockMvc mockMvc;
     private final ObjectMapper objectMapper;
 
     // NOTE: You do not need to manually initialize `ObjectMapper` class constructor if you annotate the field with `@Autowired`.
@@ -39,20 +42,30 @@ public class AuthorControllerIntegrationTests {
         this.objectMapper = objectMapper;
     }
 
-    @Test
-    public void testThatCreateAuthorReturnsHttp201Successfully() throws Exception {
-        AuthorEntity testAuthorA = TestDataUtil.buildAuthor(null, "APJ Kalam", 30);
-        String authorJson = objectMapper.writeValueAsString(testAuthorA);
+@Test
+public void testThatCreateAuthorReturnsHttp201AndSavedAuthorSuccessfully() throws Exception {
+    // Build a test AuthorEntity and serialize it to JSON
+    AuthorEntity testAuthorA = TestDataUtil.buildAuthor(null, NAME, AGE);
+    String authorJsonAsString = objectMapper.writeValueAsString(testAuthorA);
 
-
-        mockMvc.perform(
-                MockMvcRequestBuilders.post("/authors")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(authorJson)
-        ).andExpect(
-                MockMvcResultMatchers.status().isCreated()
-        );
-
-
-    }
+    // Perform POST /authors and verify the response
+    mockMvc.perform(
+            MockMvcRequestBuilders.post("/authors")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(authorJsonAsString)
+    )
+    // Expect HTTP 201 Created status
+    .andExpect(
+            MockMvcResultMatchers.status().isCreated()
+    )
+    .andExpect(
+            MockMvcResultMatchers.jsonPath("$.id").isNumber()
+    )
+    .andExpect(
+            MockMvcResultMatchers.jsonPath("$.name").value(NAME)
+    )
+    .andExpect(
+            MockMvcResultMatchers.jsonPath("$.age").value(AGE)
+    );
+}
 }
