@@ -4,6 +4,7 @@ import com.example.api.domain.entity.AuthorEntity;
 import com.example.api.domain.dto.AuthorDto;
 import com.example.api.mappers.Mapper;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
@@ -20,6 +21,7 @@ public class AuthorMapperImpl implements Mapper<AuthorEntity, AuthorDto> {
      * Constructor for AuthorMapperImpl.
      * @param modelMapper the ModelMapper instance injected by Spring for object mapping
      */
+    @Autowired
     public AuthorMapperImpl(ModelMapper modelMapper) {
         this.modelMapper = modelMapper;
     }
