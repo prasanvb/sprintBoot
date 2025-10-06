@@ -2,7 +2,7 @@ package com.example.api.mappers;
 
 public interface Mapper<A, B> {
 
-    B mapTo(A a);
     A mapFrom(B b);
+    B mapTo(A a);
 
 }

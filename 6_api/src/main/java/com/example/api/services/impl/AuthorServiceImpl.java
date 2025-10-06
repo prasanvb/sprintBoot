@@ -6,10 +6,10 @@ import com.example.api.services.AuthorService;
 import org.springframework.stereotype.Service;
 
 @Service
-public class AuthorServiceimpl implements AuthorService {
+public class AuthorServiceImpl implements AuthorService {
     private final AuthorRepository authorRepository;
 
-    public AuthorServiceimpl(AuthorRepository authorRepository) {
+    public AuthorServiceImpl(AuthorRepository authorRepository) {
         this.authorRepository = authorRepository;
     }
 

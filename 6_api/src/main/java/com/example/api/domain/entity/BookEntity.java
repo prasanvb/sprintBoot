@@ -10,17 +10,22 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Entity
-@Table(name = "books")
+@Entity // Marks this class as a JPA entity, representing a database table
+@Table(name = "books") // Specifies the table name in the database
 public class BookEntity {
 
+    // Marks this field as the primary key of the entity
     @Id
     private String isbn;
 
+    // Represents the book's title column in the database
     private String title;
 
+    // Defines a many-to-one relationship with AuthorEntity
+    // CascadeType.ALL propagates all operations to the associated author
     @ManyToOne(cascade = CascadeType.ALL)
+    // Specifies the foreign key column name in the books table
     @JoinColumn(name = "author_id")
-    private AuthorEntity authorEntityId;
+    private AuthorEntity authorEntity;
 
 }

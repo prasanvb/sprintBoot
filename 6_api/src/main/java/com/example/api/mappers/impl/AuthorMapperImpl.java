@@ -38,6 +38,19 @@ public class AuthorMapperImpl implements Mapper<AuthorEntity, AuthorDto> {
         }
 
         authorDto.setDetails("My name is " + authorDto.getName() + " and I am " + authorDto.getAge() + " years old.");
+
+        //  ModelMapper API requires the target class type as a `Class<?>` object, not an instance of the class.
+
+        //  `.class` is Java's way of getting the `Class` object that represents the `AuthorEntity` type at runtime.
+        //  This `Class` object contains all the metadata about the `AuthorEntity` class that ModelMapper needs to:
+        //
+        //  1. Determine the target type's structure
+        //  2. Access its properties through reflection
+        //  3. Create a new instance of `AuthorEntity`
+        //  4. Map matching fields from the source (`authorDto`) to the target type
+        //
+        //  Simply using `AuthorEntity` alone wouldn't work as it's just a type name,
+        //  not a `Class` object that ModelMapper can use for reflection and instantiation.
         return modelMapper.map(authorDto, AuthorEntity.class);
     }
 

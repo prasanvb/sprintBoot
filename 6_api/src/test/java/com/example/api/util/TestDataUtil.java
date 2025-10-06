@@ -21,7 +21,7 @@ public class TestDataUtil {
         return BookEntity.builder()
                 .isbn(isbn)
                 .title(title)
-                .authorEntityId(authorEntity)
+                .authorEntity(authorEntity)
                 .build();
     }
 }

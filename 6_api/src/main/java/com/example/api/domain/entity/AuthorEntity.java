@@ -11,8 +11,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Entity // converts POJO to Entity
-@Table(name = "authors")
+@Entity // Marks this class as a JPA entity, representing a database table
+@Table(name = "authors") // Specifies the table name in the database
 public class AuthorEntity {
 
     @Id
