@@ -45,8 +45,8 @@ public class AuthorControllerIntegrationTests {
 @Test
 public void testThatCreateAuthorReturnsHttp201AndSavedAuthorSuccessfully() throws Exception {
     // Build a test AuthorEntity and serialize it to JSON
-    AuthorEntity testAuthorA = TestDataUtil.buildAuthor(null, NAME, AGE);
-    String authorJsonAsString = objectMapper.writeValueAsString(testAuthorA);
+    AuthorEntity testAuthorEntity = TestDataUtil.buildAuthor(null, NAME, AGE);
+    String authorJsonAsString = objectMapper.writeValueAsString(testAuthorEntity);
 
     // Perform POST /authors and verify the response
     mockMvc.perform(
@@ -55,17 +55,9 @@ public void testThatCreateAuthorReturnsHttp201AndSavedAuthorSuccessfully() throw
                     .content(authorJsonAsString)
     )
     // Expect HTTP 201 Created status
-    .andExpect(
-            MockMvcResultMatchers.status().isCreated()
-    )
-    .andExpect(
-            MockMvcResultMatchers.jsonPath("$.id").isNumber()
-    )
-    .andExpect(
-            MockMvcResultMatchers.jsonPath("$.name").value(NAME)
-    )
-    .andExpect(
-            MockMvcResultMatchers.jsonPath("$.age").value(AGE)
-    );
+    .andExpect(MockMvcResultMatchers.status().isCreated())
+    .andExpect(MockMvcResultMatchers.jsonPath("$.id").isNumber())
+    .andExpect(MockMvcResultMatchers.jsonPath("$.name").value(NAME))
+    .andExpect(MockMvcResultMatchers.jsonPath("$.age").value(AGE));
 }
 }

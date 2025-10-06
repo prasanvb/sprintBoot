@@ -2,6 +2,7 @@ package com.example.api.util;
 
 public final class Constants {
     // AUTHOR 1
+    public static final Long TEST_ID = 1L;
     public static final String NAME = "APJ Kalam";
     public static final int AGE = 100;
     // AUTHOR 2
