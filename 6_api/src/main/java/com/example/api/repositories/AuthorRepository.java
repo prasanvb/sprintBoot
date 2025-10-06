@@ -8,15 +8,14 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface AuthorRepository extends CrudRepository<AuthorEntity, Long> {
 
-    // Spring Data JPA can automatically derive queries from method names without requiring explicit implementation.
-    // This feature relies on clear, understandable method names and doesn't support all possible query scenarios.
+    // Derived query: SELECT * FROM authors WHERE age < ?
     Iterable<AuthorEntity> ageLessThan(int age);
 
-    // Custom Hibernate Query Language
+    // JPQL query using entity names and parameters
     @Query(value = "SELECT a from AuthorEntity a where a.age > ?1")
     Iterable<AuthorEntity> findAuthorsAgeGreaterThan(int i);
 
-    // Custom SQL query
+    // Native SQL query against table columns
     @Query(value = "SELECT * FROM authors WHERE name = ?", nativeQuery = true)
     Iterable<AuthorEntity> findAuthorByName(String name);
 }
