@@ -19,9 +19,7 @@
   - [Authors](#authors)
   - [Books](#books)
   - [Sample Requests](#sample-requests)
-- [Additional Technical Details](#additional-technical-details)
-  - [Database Configuration Details](#database-configuration-details)
-  - [Data Access Patterns](#data-access-patterns)
+- [Database Configuration](#database-configuration)
 
 ### Project Structure
 ```
@@ -229,7 +227,13 @@ sequenceDiagram
 #### Repository Layer
 **Features:**
 - Extends Spring Data JPA `CrudRepository<T, ID>`
-- Provides automatic CRUD operations (save, findById, findAll, deleteById, etc.)
+- Provides automatic CRUD operations:
+  - `save(entity)`: Insert or update entity
+  - `findById(id)`: Retrieve by ID
+  - `findAll()`: Get all entities
+  - `deleteById(id)`: Remove by ID
+  - `count()`: Count total entities
+  - `existsById(id)`: Check existence
 - Custom query methods: Derived queries, JPQL (@Query with JPQL), Native SQL (@Query with nativeQuery=true)
 
 **AuthorRepository:**
@@ -241,7 +245,7 @@ sequenceDiagram
   - Native queries use table names: `SELECT * FROM authors WHERE name = ?`
 
 
-**BookRepository:** 
+**BookRepository:**
 - Supports basic repository with standard CRUD operations
 
 
@@ -368,36 +372,15 @@ sequenceDiagram
     }
 ```
 
-### Technical Details
+### Database Configuration
 
-#### Database Configuration Details
 **PostgreSQL Settings:**
 - Non-standard port (5433) for avoiding conflicts
 - Default schema: public
-- Connection pooling: HikariCP (Spring Boot default)
-- Transaction isolation: READ_COMMITTED (PostgreSQL default)
+- Connection Pooling: HikariCP (Spring Boot's default high-performance JDBC connection pool)
 
-**JPA Configuration Specifics:**
-- Hibernate DDL strategy: `update` (safe for production)
-- Physical naming strategy: SpringPhysicalNamingStrategy
-- Implicit naming strategy: SpringImplicitNamingStrategy
-- Second-level cache: Disabled by default
+**Transaction Settings:**
+- Transaction Isolation: READ_COMMITTED (PostgreSQL default, balances consistency and performance)
 
-#### Data Access Patterns
-**Repository Layer Implementation:**
-- Spring Data JPA's CrudRepository provides:
-  - save(entity)
-  - findById(id)
-  - findAll()
-  - deleteById(id)
-  - count()
-  - existsById(id)
-- Custom query methods follow Spring Data JPA naming conventions
-- Pagination support through PagingAndSortingRepository
-- Auditing capabilities through @EnableJpaAuditing
-
-**Service Layer Patterns:**
-- Transaction management through @Transactional
-- Exception translation using PersistenceExceptionTranslationPostProcessor
-- Lazy loading management in service layer
-- DTOs prevent lazy loading issues in controllers
+**DDL Strategy:**
+- `hibernate.hbm2ddl.auto` set to `update` (safe for production as it only adds/modifies without dropping)
