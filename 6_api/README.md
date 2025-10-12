@@ -44,7 +44,7 @@ src/
 │   │               │       └── BookEntity.java
 │   │               ├── mappers/
 │   │               │   ├── Mapper.java             # Generic Mapper Interface
-│   │               │   └── impl/
+│   │               │   └── impl/                   # Mapper Implementations
 │   │               │       ├── AuthorMapperImpl.java
 │   │               │       └── BookMapperImpl.java
 │   │               ├── repositories/               # Spring Data JPA Repositories
@@ -52,7 +52,7 @@ src/
 │   │               │   └── BookRepository.java
 │   │               └── services/
 │   │                   ├── AuthorService.java      # Service Interfaces
-│   │                   ├── BookService.java
+│   │                   ├── BookService.java        # Service Implementations
 │   │                   └── impl/
 │   │                       ├── AuthorServiceImpl.java
 │   │                       └── BookServiceImpl.java

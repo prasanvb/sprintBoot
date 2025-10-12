@@ -1,6 +1,5 @@
 package com.example.api.controllers;
 
-import com.example.api.domain.dto.AuthorDto;
 import com.example.api.domain.entity.AuthorEntity;
 import com.example.api.domain.entity.BookEntity;
 import com.example.api.util.TestDataUtil;

@@ -28,7 +28,8 @@ public class BookController {
         bookDto.setIsbn(isbn);
         BookEntity bookEntity = bookMapper.mapFrom(bookDto);
         BookEntity savedBookEntity = bookService.createBook(bookEntity);
-        return new ResponseEntity<>(bookMapper.mapTo(savedBookEntity), HttpStatus.CREATED);
+        BookDto savedBookDto = bookMapper.mapTo(savedBookEntity);
+        return new ResponseEntity<>(savedBookDto, HttpStatus.CREATED);
 
     }
 }
