@@ -416,12 +416,6 @@ sequenceDiagram
 - **@DirtiesContext**: Resets ApplicationContext between tests
 - **@AutoConfigureMockMvc**: Enables MVC testing with MockMvc
 
-### Hibernate Auto DDL
-
-```bash
-spring.jpa.hibernate.ddl-auto=update
-```
-
 ### Entity Relationship Diagram
 
 ```mermaid
@@ -442,6 +436,28 @@ spring.jpa.hibernate.ddl-auto=update
 ```
 
 ### API Examples
+
+#### Authors
+| Method | Endpoint      |
+|--------|---------------|
+| POST   | /authors      |
+| GET    | /authors/{id} |
+| GET    | /authors      |
+| PUT    | /authors/{id} |
+| PATCH  | /authors/{id} |
+| DELETE | /authors/{id} |
+
+#### Books
+| Method | Endpoint      |
+|--------|---------------|
+| PUT    | /books/{isbn} |
+| GET    | /books/{isbn} |
+| GET    | /books        |
+| PUT    | /books/{isbn} |
+| PATCH  | /books/{isbn} |
+| DELETE | /books/{isbn} |
+
+#### Sample Requests
 
 - Author object
   - HTTP method `POST`  and path `/authors`
