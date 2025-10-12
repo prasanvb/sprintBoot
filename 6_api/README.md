@@ -293,6 +293,16 @@ sequenceDiagram
 - Validates existing author ID (logic absent, needs implementation)
 - HTTP 201 Created status
 
+#### JPA Hibernate DDL Auto Setting
+
+Instructs Hibernate to automatically update the database schema to match the current JPA entity models on application startup. 
+This is convenient for development, but for production environments, consider using `validate` or managing schema changes manually.
+
+```editorconfig
+    spring.jpa.hibernate.ddl-auto=update
+```
+
+
 ### Testing Strategy
 
 #### Integration Tests
@@ -340,7 +350,7 @@ sequenceDiagram
 | PATCH  | /books/{isbn} |
 | DELETE | /books/{isbn} |
 
-#### Sample Requests
+#### API Requests data
 
 - Author object
   - HTTP method `POST`  and path `/authors`
@@ -362,25 +372,28 @@ sequenceDiagram
 
 ```json
     {
-        "isbn": "9780-lkw8-4785",
-        "title": "Land of seven rivers",
-        "author": {
-            "id": 1,
-            "name": "Sanjeev Sanyal",
-            "age": 50
-        }
+      "isbn": "9780-lkw8-4789",
+      "title": "Land of seven rivers-2",
+      "authorDto": {
+        "id": 1,
+        "name": "Sanjeev Sanyal",
+        "age": 50
+      }
     }
 ```
 
-### Database Configuration
+### Queries Summary
 
-**PostgreSQL Settings:**
-- Non-standard port (5433) for avoiding conflicts
-- Default schema: public
-- Connection Pooling: HikariCP (Spring Boot's default high-performance JDBC connection pool)
-
-**Transaction Settings:**
-- Transaction Isolation: READ_COMMITTED (PostgreSQL default, balances consistency and performance)
-
-**DDL Strategy:**
-- `hibernate.hbm2ddl.auto` set to `update` (safe for production as it only adds/modifies without dropping)
+```sql
+    SELECT * FROM authors
+    ORDER BY id ASC;
+    
+    SELECT * FROM books
+    ORDER BY isbn ASC;
+    
+    SELECT * FROM authors AS a
+    INNER JOIN books AS b
+    ON a.id = b.author_id;
+    
+    TRUNCATE TABLE books;
+```
