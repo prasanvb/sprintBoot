@@ -1,6 +1,7 @@
 package com.example.api.controllers;
 
 import com.example.api.domain.entity.AuthorEntity;
+import com.example.api.services.AuthorService;
 import com.example.api.util.TestDataUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
@@ -31,33 +32,50 @@ public class AuthorControllerIntegrationTests {
     // Making it `final` enforces immutability, ensuring that its reference cannot be changed after construction, which is a good practice for dependency-injected fields.
     private final MockMvc mockMvc;
     private final ObjectMapper objectMapper;
+    private final AuthorService authorService;
 
     // NOTE: You do not need to manually initialize `ObjectMapper` class constructor if you annotate the field with `@Autowired`.
     // Spring Boot will inject the `ObjectMapper` bean defined in `MapperConfig` automatically.
     // Your current constructor-based injection is correct and will use the bean from `MapperConfig`
     // as long as it is annotated with `@Configuration` and provides an `@Bean` of type `ObjectMapper`.
     @Autowired
-    public AuthorControllerIntegrationTests(MockMvc mockMvc, ObjectMapper objectMapper) {
+    public AuthorControllerIntegrationTests(MockMvc mockMvc, ObjectMapper objectMapper, AuthorService authorService) {
         this.mockMvc = mockMvc;
         this.objectMapper = objectMapper;
+        this.authorService = authorService;
     }
 
-@Test
-public void testThatCreateAuthorReturnsHttp201AndSavedAuthorSuccessfully() throws Exception {
-    // Build a test AuthorEntity and serialize it to JSON
-    AuthorEntity testAuthorEntity = TestDataUtil.buildAuthor(null, NAME, AGE);
-    String authorJsonAsString = objectMapper.writeValueAsString(testAuthorEntity);
+    @Test
+    public void testThatCreateAuthorReturnsHttp201AndSavedAuthorSuccessfully() throws Exception {
+        // Build a test AuthorEntity and serialize it to JSON
+        AuthorEntity testAuthorEntity = TestDataUtil.buildAuthor(null, NAME, AGE);
+        String authorJsonAsString = objectMapper.writeValueAsString(testAuthorEntity);
 
-    // Perform POST /authors and verify the response
-    mockMvc.perform(
-            MockMvcRequestBuilders.post("/authors")
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(authorJsonAsString)
-    )
-    // Expect HTTP 201 Created status
-    .andExpect(MockMvcResultMatchers.status().isCreated())
-    .andExpect(MockMvcResultMatchers.jsonPath("$.id").isNumber())
-    .andExpect(MockMvcResultMatchers.jsonPath("$.name").value(NAME))
-    .andExpect(MockMvcResultMatchers.jsonPath("$.age").value(AGE));
-}
+        // Perform POST /authors and verify the response
+        mockMvc.perform(
+                MockMvcRequestBuilders.post("/authors")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(authorJsonAsString)
+        )
+        // Expect HTTP 201 Created status
+        .andExpect(MockMvcResultMatchers.status().isCreated())
+        .andExpect(MockMvcResultMatchers.jsonPath("$.id").isNumber())
+        .andExpect(MockMvcResultMatchers.jsonPath("$.name").value(NAME))
+        .andExpect(MockMvcResultMatchers.jsonPath("$.age").value(AGE));
+    }
+
+    @Test
+    public void testThatListAuthorsReturnsHttpsStatus200() throws Exception {
+        AuthorEntity testAuthorEntity = TestDataUtil.buildAuthor(null, NAME, AGE);
+        authorService.createAuthor(testAuthorEntity);
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.get("/authors")
+                        .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(MockMvcResultMatchers.status().isOk())
+        .andExpect(MockMvcResultMatchers.jsonPath("$[0].id").isNumber())
+        .andExpect(MockMvcResultMatchers.jsonPath("$[0].name").value(NAME))
+        .andExpect(MockMvcResultMatchers.jsonPath("$[0].age").value(AGE));
+
+    }
 }

@@ -5,6 +5,11 @@ import com.example.api.repositories.BookRepository;
 import com.example.api.services.BookService;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.ListIterator;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+
 @Service
 public class BookServiceImpl implements BookService {
 
@@ -25,5 +30,16 @@ public class BookServiceImpl implements BookService {
     @Override
     public BookEntity createBook(BookEntity bookEntity) {
         return bookRepository.save(bookEntity);
+    }
+
+    @Override
+    public List<BookEntity> findAll(){
+        Iterable<BookEntity> books = bookRepository.findAll();
+        // stream method from StreamSupport class converts the iterable result to a new sequential or parallel stream from a Spliterator.
+        // collect method from Stream class accumulates the elements of this stream into a List. The elements in the list will be in this stream's encounter order, if one exists.
+        // Collector accumulates the input elements into a new List. There are no guarantees on the type, mutability, serializability, or thread-safety of the List.
+        return StreamSupport
+                .stream(books.spliterator(), false)
+                .collect(Collectors.toList());
     }
 }

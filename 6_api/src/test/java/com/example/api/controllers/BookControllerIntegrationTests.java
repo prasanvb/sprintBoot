@@ -2,6 +2,7 @@ package com.example.api.controllers;
 
 import com.example.api.domain.entity.AuthorEntity;
 import com.example.api.domain.entity.BookEntity;
+import com.example.api.services.BookService;
 import com.example.api.util.TestDataUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
@@ -26,19 +27,22 @@ public class BookControllerIntegrationTests {
 
     private final MockMvc mockMvc;
     private final ObjectMapper objectMapper;
+    private final BookService bookService;
+    private final AuthorEntity testAuthorEntity = TestDataUtil.buildAuthor(null, NAME, AGE);
+    private final BookEntity testBookEntity = TestDataUtil.buildBook(ISBN, TITLE, testAuthorEntity);
+
 
     @Autowired
-    public BookControllerIntegrationTests(MockMvc mockMvc, ObjectMapper objectMapper) {
+    public BookControllerIntegrationTests(MockMvc mockMvc, ObjectMapper objectMapper, BookService bookService) {
         this.mockMvc = mockMvc;
         this.objectMapper = objectMapper;
+        this.bookService = bookService;
     }
 
     @Test
     public void testThatCreateBookWithValidAuthorSavedSuccessfully() throws Exception {
-        AuthorEntity testAuthorEntity = TestDataUtil.buildAuthor(TEST_ID, NAME, AGE);
-        BookEntity testBookEntity = TestDataUtil.buildBook(ISBN, TITLE, testAuthorEntity);
-        String bookJsonAsString = objectMapper.writeValueAsString(testBookEntity);
 
+        String bookJsonAsString = objectMapper.writeValueAsString(testBookEntity);
 
         String formattedUrl = String.format("/books/%s", ISBN);
 
@@ -50,7 +54,18 @@ public class BookControllerIntegrationTests {
         .andExpect(MockMvcResultMatchers.status().isCreated())
         .andExpect(MockMvcResultMatchers.jsonPath("$.isbn").value(ISBN))
         .andExpect(MockMvcResultMatchers.jsonPath("$.title").value(TITLE));
-;
+    }
 
+    @Test
+    public void testThatListBooksReturnsHttpsStatus200() throws Exception {
+        bookService.createBook(testBookEntity);
+
+        mockMvc.perform(
+                        MockMvcRequestBuilders.get("/books")
+                                .contentType(MediaType.APPLICATION_JSON)
+        )
+        .andExpect(MockMvcResultMatchers.status().isOk())
+        .andExpect(MockMvcResultMatchers.jsonPath("$[0].isbn").value(ISBN))
+        .andExpect(MockMvcResultMatchers.jsonPath("$[0].title").value(TITLE));
     }
 }
