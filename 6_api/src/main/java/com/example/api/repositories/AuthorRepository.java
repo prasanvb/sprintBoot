@@ -8,6 +8,12 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface AuthorRepository extends CrudRepository<AuthorEntity, Long> {
 
+    // <S extends T> S save(S entity);
+
+    // Iterable<T> findAll();
+
+    // Optional<T> findById(ID id);
+
     // Derived query: SELECT * FROM authors WHERE age < ?
     Iterable<AuthorEntity> ageLessThan(int age);
 

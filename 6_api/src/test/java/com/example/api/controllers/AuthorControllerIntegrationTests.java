@@ -16,8 +16,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import static com.example.api.util.Constants.AGE;
-import static com.example.api.util.Constants.NAME;
+import static com.example.api.util.Constants.*;
 
 // Loads the full Spring application context for integration testing
 @SpringBootTest
@@ -76,6 +75,25 @@ public class AuthorControllerIntegrationTests {
         .andExpect(MockMvcResultMatchers.jsonPath("$[0].id").isNumber())
         .andExpect(MockMvcResultMatchers.jsonPath("$[0].name").value(NAME))
         .andExpect(MockMvcResultMatchers.jsonPath("$[0].age").value(AGE));
+
+    }
+
+    @Test
+    public void testThatFindAuthorByIdReturnsHttpsStatus200() throws Exception {
+        AuthorEntity testAuthorEntity = TestDataUtil.buildAuthor(null, NAME, AGE);
+
+        authorService.createAuthor(testAuthorEntity);
+
+        Long extractedId = testAuthorEntity.getId();
+
+        String findAuthorByUrl = String.format("/authors/%s", extractedId);
+
+        mockMvc.perform(
+                        MockMvcRequestBuilders.get(findAuthorByUrl)
+                                .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(MockMvcResultMatchers.status().isOk())
+        .andExpect(MockMvcResultMatchers.jsonPath("$.name").value(NAME))
+        .andExpect(MockMvcResultMatchers.jsonPath("$.age").value(AGE));
 
     }
 }

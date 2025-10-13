@@ -6,13 +6,11 @@ import com.example.api.mappers.Mapper;
 import com.example.api.services.AuthorService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
@@ -52,5 +50,15 @@ public class AuthorController {
                 .map(authorMapper::mapTo)  // Transform each AuthorEntity to AuthorDto using the mapper
                 .collect(Collectors.toList());  // Collect the mapped DTOs into a List<AuthorDto>
 
+    }
+
+    @GetMapping(path="/authors/{id}")
+    public ResponseEntity<AuthorDto> authorById(@PathVariable("id") Long id){
+        Optional<AuthorEntity> foundAuthorEntity = authorService.findById(id);
+
+        return foundAuthorEntity.map(authorEntity -> {
+            AuthorDto foundAuthorDto = authorMapper.mapTo(authorEntity);
+            return new ResponseEntity<>(foundAuthorDto, HttpStatus.OK);
+        }).orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 }

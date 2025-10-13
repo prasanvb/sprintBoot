@@ -44,10 +44,10 @@ public class BookControllerIntegrationTests {
 
         String bookJsonAsString = objectMapper.writeValueAsString(testBookEntity);
 
-        String formattedUrl = String.format("/books/%s", ISBN);
+        String putBookUrl = String.format("/books/%s", ISBN);
 
         mockMvc.perform(
-                MockMvcRequestBuilders.put(formattedUrl)
+                MockMvcRequestBuilders.put(putBookUrl)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(bookJsonAsString)
         )
