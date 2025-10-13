@@ -14,6 +14,8 @@ public interface AuthorRepository extends CrudRepository<AuthorEntity, Long> {
 
     // Optional<T> findById(ID id);
 
+    // boolean existsById(ID id);
+
     // Derived query: SELECT * FROM authors WHERE age < ?
     Iterable<AuthorEntity> ageLessThan(int age);
 

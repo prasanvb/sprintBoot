@@ -29,7 +29,7 @@ public class BookServiceImpl implements BookService {
      * @return the saved book entity
      */
     @Override
-    public BookEntity createBook(BookEntity bookEntity) {
+    public BookEntity saveBook(BookEntity bookEntity) {
         return bookRepository.save(bookEntity);
     }
 
@@ -48,5 +48,10 @@ public class BookServiceImpl implements BookService {
     public Optional<BookEntity> findById(String isbn) {
         return bookRepository.findById(isbn);
 
+    }
+
+    @Override
+    public Boolean isBookExists(String isbn) {
+        return bookRepository.existsById(isbn);
     }
 }

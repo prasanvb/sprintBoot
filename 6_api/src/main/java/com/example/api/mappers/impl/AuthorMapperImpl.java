@@ -70,6 +70,4 @@ public class AuthorMapperImpl implements Mapper<AuthorEntity, AuthorDto> {
         return modelMapper.map(authorEntity, AuthorDto.class);
 
     }
-
-
 }

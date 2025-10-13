@@ -12,6 +12,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import static com.example.api.path.BookPaths.BOOKS;
+import static com.example.api.path.BookPaths.BOOK_BY_ISBN;
+
 
 @RestController
 public class BookController {
@@ -24,19 +27,33 @@ public class BookController {
     }
 
 
-    @PutMapping(path = "/books/{isbn}")
-    public ResponseEntity<BookDto> createBook(@PathVariable String isbn, @RequestBody BookDto bookDto) {
+    @PutMapping(path = BOOK_BY_ISBN)
+    public ResponseEntity<BookDto> createUpdateBookByIsbn(@PathVariable String isbn, @RequestBody BookDto bookDto) {
+
+        if (isbn == null || isbn.trim().isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
         // Overwrites the ISBN from the path variable to ensure consistency
         bookDto.setIsbn(isbn);
         BookEntity bookEntity = bookMapper.mapFrom(bookDto);
-        BookEntity savedBookEntity = bookService.createBook(bookEntity);
+
+        boolean bookExisted = bookService.isBookExists(isbn);
+
+        BookEntity savedBookEntity = bookService.saveBook(bookEntity);
         BookDto savedBookDto = bookMapper.mapTo(savedBookEntity);
-        return new ResponseEntity<>(savedBookDto, HttpStatus.CREATED);
+
+        if (bookExisted) {
+            return new ResponseEntity<>(savedBookDto, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(savedBookDto, HttpStatus.CREATED);
+        }
+
 
     }
 
-    @GetMapping(path = "/books")
-    public List<BookDto> books() {
+    @GetMapping(path = BOOKS)
+    public List<BookDto> listBooks() {
         List<BookEntity> bookEntities = bookService.findAll();
         return bookEntities
                 .stream()
@@ -44,8 +61,13 @@ public class BookController {
                 .collect(Collectors.toList());
     }
 
-    @GetMapping(path = "/books/{isbn}")
+    @GetMapping(path = BOOK_BY_ISBN)
     public ResponseEntity<BookDto> findBookByIsbn(@PathVariable String isbn) {
+
+        if (isbn == null || isbn.trim().isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
         Optional<BookEntity> identifiedBookByIsbn = bookService.findById(isbn);
 
         return identifiedBookByIsbn.map(bookEntity -> {
@@ -54,4 +76,5 @@ public class BookController {
         }).orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
 
     }
+
 }

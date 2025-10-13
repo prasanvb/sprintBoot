@@ -23,7 +23,7 @@ public class AuthorServiceImpl implements AuthorService {
      * Implied transactional through JPA.
      */
     @Override
-    public AuthorEntity createAuthor(AuthorEntity authorEntity) {
+    public AuthorEntity saveAuthor(AuthorEntity authorEntity) {
         return authorRepository.save(authorEntity);
     }
 
@@ -41,5 +41,11 @@ public class AuthorServiceImpl implements AuthorService {
     @Override
     public Optional<AuthorEntity> findById(Long id) {
         return authorRepository.findById(id);
+    }
+
+
+    @Override
+    public Boolean isExists(Long id) {
+        return authorRepository.existsById(id);
     }
 }

@@ -13,6 +13,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import static com.example.api.path.AuthorPaths.*;
+
 @RestController
 public class AuthorController {
     private final AuthorService authorService;
@@ -23,26 +25,26 @@ public class AuthorController {
         this.authorMapper = authorMapper;
     }
 
-    @PostMapping(path = "/authors")
+    @PostMapping(path = AUTHORS)
     public ResponseEntity<AuthorDto> createAuthor(@RequestBody AuthorDto author) {
         AuthorEntity authorEntity = authorMapper.mapFrom(author);
-        AuthorEntity savedAuthorEntity = authorService.createAuthor(authorEntity);
+        AuthorEntity savedAuthorEntity = authorService.saveAuthor(authorEntity);
         AuthorDto savedAuthorDto = authorMapper.mapTo(savedAuthorEntity);
         return new ResponseEntity<>(savedAuthorDto, HttpStatus.CREATED);
     }
 
-    @GetMapping(path = "/list-authors")
+    @GetMapping(path = LIST_AUTHORS)
     public List<AuthorDto> listAuthors() {
         List<AuthorEntity> authorEntities = authorService.findAll();
-        List<AuthorDto> authorDtos = new ArrayList<>();
+        List<AuthorDto> authorDtolist = new ArrayList<>();
         for (AuthorEntity authorEntity : authorEntities) {
-            authorDtos.add(authorMapper.mapTo(authorEntity));
+            authorDtolist.add(authorMapper.mapTo(authorEntity));
         }
 
-        return authorDtos;
+        return authorDtolist;
     }
 
-    @GetMapping(path = "/authors")
+    @GetMapping(path = AUTHORS)
     public List<AuthorDto> authors() {
         List<AuthorEntity> authorEntities = authorService.findAll();
         return authorEntities  // Start with the list of AuthorEntity objects
@@ -52,8 +54,12 @@ public class AuthorController {
 
     }
 
-    @GetMapping(path = "/authors/{id}")
-    public ResponseEntity<AuthorDto> authorById(@PathVariable("id") Long id) {
+    @GetMapping(path = AUTHOR_BY_ID)
+    public ResponseEntity<AuthorDto> authorById(@PathVariable Long id) {
+        if (id == null) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
         Optional<AuthorEntity> foundAuthorEntity = authorService.findById(id);
 
         return foundAuthorEntity.map(authorEntity -> {
@@ -61,4 +67,30 @@ public class AuthorController {
             return new ResponseEntity<>(foundAuthorDto, HttpStatus.OK);
         }).orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
+
+    // @GetMapping(path = "/authors/age-less-than/{age}")
+
+    // @GetMapping(path = "/authors/age-greater-than/{age}")
+
+    // @GetMapping(path = "/authors/name/{name}")
+
+
+    @PutMapping(path = UPDATE_AUTHOR_BY_ID)
+    public ResponseEntity<AuthorDto> updateAuthorById(@PathVariable Long id, @RequestBody AuthorDto authorDto) {
+        if (id == null) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        if (!authorService.isExists(id)) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        authorDto.setId(id);
+        AuthorEntity authorEntity = authorMapper.mapFrom(authorDto);
+        AuthorEntity savedAuthorEntity = authorService.saveAuthor(authorEntity);
+        AuthorDto savedAuthorDto = authorMapper.mapTo(savedAuthorEntity);
+
+        return new ResponseEntity<>(savedAuthorDto, HttpStatus.OK);
+    }
+
 }

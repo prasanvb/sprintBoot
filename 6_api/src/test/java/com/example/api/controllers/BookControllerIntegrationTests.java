@@ -17,6 +17,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
+import static com.example.api.path.BookPaths.BOOKS;
+import static com.example.api.path.BookPaths.bookByIsbnUrl;
 import static com.example.api.util.Constants.*;
 
 @SpringBootTest
@@ -44,10 +46,8 @@ public class BookControllerIntegrationTests {
 
         String bookJsonAsString = objectMapper.writeValueAsString(testBookEntity);
 
-        String putBookUrl = String.format("/books/%s", ISBN);
-
         mockMvc.perform(
-                        MockMvcRequestBuilders.put(putBookUrl)
+                        MockMvcRequestBuilders.put(bookByIsbnUrl(ISBN))
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(bookJsonAsString)
                 ).andExpect(MockMvcResultMatchers.status().isCreated())
@@ -56,11 +56,28 @@ public class BookControllerIntegrationTests {
     }
 
     @Test
-    public void testThatListBooksReturnsHttpsStatus200() throws Exception {
-        bookService.createBook(testBookEntity);
+    public void testThatUpdateBookWithValidAuthorSavedSuccessfully() throws Exception {
+        BookEntity createBookEntity = bookService.saveBook(testBookEntity);
+
+        BookEntity updateBookEntity = TestDataUtil.buildBook(createBookEntity.getIsbn(), TITLE+"updated", testAuthorEntity);
+
+        String bookJsonAsString = objectMapper.writeValueAsString(updateBookEntity);
 
         mockMvc.perform(
-                        MockMvcRequestBuilders.get("/books")
+                        MockMvcRequestBuilders.put(bookByIsbnUrl(ISBN))
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(bookJsonAsString)
+                ).andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.isbn").value(updateBookEntity.getIsbn()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.title").value(updateBookEntity.getTitle()));
+    }
+
+    @Test
+    public void testThatListBooksReturnsHttpsStatus200() throws Exception {
+        bookService.saveBook(testBookEntity);
+
+        mockMvc.perform(
+                        MockMvcRequestBuilders.get(BOOKS)
                                 .contentType(MediaType.APPLICATION_JSON)
                 ).andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].isbn").value(ISBN))
@@ -69,12 +86,10 @@ public class BookControllerIntegrationTests {
 
     @Test
     public void testThatFindBooksByIsbnReturnsHttpsStatus200() throws Exception {
-        BookEntity createBookEntity = bookService.createBook(testBookEntity);
-
-        String findBookByIsbnUrl = String.format("/books/%s", createBookEntity.getIsbn());
+        BookEntity createBookEntity = bookService.saveBook(testBookEntity);
 
         mockMvc.perform(
-                        MockMvcRequestBuilders.get(findBookByIsbnUrl)
+                        MockMvcRequestBuilders.get(bookByIsbnUrl(createBookEntity.getIsbn()))
                                 .contentType(MediaType.APPLICATION_JSON)
                 ).andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.isbn").value(ISBN))
