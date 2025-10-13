@@ -28,22 +28,22 @@ public class AuthorController {
         AuthorEntity authorEntity = authorMapper.mapFrom(author);
         AuthorEntity savedAuthorEntity = authorService.createAuthor(authorEntity);
         AuthorDto savedAuthorDto = authorMapper.mapTo(savedAuthorEntity);
-        return new ResponseEntity<>(savedAuthorDto,HttpStatus.CREATED);
+        return new ResponseEntity<>(savedAuthorDto, HttpStatus.CREATED);
     }
 
-    @GetMapping(path="/list-authors")
-    public List<AuthorDto> listAuthors(){
+    @GetMapping(path = "/list-authors")
+    public List<AuthorDto> listAuthors() {
         List<AuthorEntity> authorEntities = authorService.findAll();
         List<AuthorDto> authorDtos = new ArrayList<>();
-        for(AuthorEntity authorEntity : authorEntities){
+        for (AuthorEntity authorEntity : authorEntities) {
             authorDtos.add(authorMapper.mapTo(authorEntity));
         }
 
         return authorDtos;
     }
 
-    @GetMapping(path="/authors")
-    public List<AuthorDto> authors(){
+    @GetMapping(path = "/authors")
+    public List<AuthorDto> authors() {
         List<AuthorEntity> authorEntities = authorService.findAll();
         return authorEntities  // Start with the list of AuthorEntity objects
                 .stream()  // Convert list to Stream for functional operations
@@ -52,8 +52,8 @@ public class AuthorController {
 
     }
 
-    @GetMapping(path="/authors/{id}")
-    public ResponseEntity<AuthorDto> authorById(@PathVariable("id") Long id){
+    @GetMapping(path = "/authors/{id}")
+    public ResponseEntity<AuthorDto> authorById(@PathVariable("id") Long id) {
         Optional<AuthorEntity> foundAuthorEntity = authorService.findById(id);
 
         return foundAuthorEntity.map(authorEntity -> {

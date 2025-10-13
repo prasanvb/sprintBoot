@@ -47,12 +47,12 @@ public class BookControllerIntegrationTests {
         String putBookUrl = String.format("/books/%s", ISBN);
 
         mockMvc.perform(
-                MockMvcRequestBuilders.put(putBookUrl)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(bookJsonAsString)
-        ).andExpect(MockMvcResultMatchers.status().isCreated())
-        .andExpect(MockMvcResultMatchers.jsonPath("$.isbn").value(ISBN))
-        .andExpect(MockMvcResultMatchers.jsonPath("$.title").value(TITLE));
+                        MockMvcRequestBuilders.put(putBookUrl)
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(bookJsonAsString)
+                ).andExpect(MockMvcResultMatchers.status().isCreated())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.isbn").value(ISBN))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.title").value(TITLE));
     }
 
     @Test
@@ -62,9 +62,9 @@ public class BookControllerIntegrationTests {
         mockMvc.perform(
                         MockMvcRequestBuilders.get("/books")
                                 .contentType(MediaType.APPLICATION_JSON)
-        ).andExpect(MockMvcResultMatchers.status().isOk())
-        .andExpect(MockMvcResultMatchers.jsonPath("$[0].isbn").value(ISBN))
-        .andExpect(MockMvcResultMatchers.jsonPath("$[0].title").value(TITLE));
+                ).andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].isbn").value(ISBN))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].title").value(TITLE));
     }
 
     @Test
@@ -74,10 +74,10 @@ public class BookControllerIntegrationTests {
         String findBookByIsbnUrl = String.format("/books/%s", createBookEntity.getIsbn());
 
         mockMvc.perform(
-                MockMvcRequestBuilders.get(findBookByIsbnUrl)
-                        .contentType(MediaType.APPLICATION_JSON)
-        ).andExpect(MockMvcResultMatchers.status().isOk())
-        .andExpect(MockMvcResultMatchers.jsonPath("$.isbn").value(ISBN))
-        .andExpect(MockMvcResultMatchers.jsonPath("$.title").value(TITLE));
+                        MockMvcRequestBuilders.get(findBookByIsbnUrl)
+                                .contentType(MediaType.APPLICATION_JSON)
+                ).andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.isbn").value(ISBN))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.title").value(TITLE));
     }
 }

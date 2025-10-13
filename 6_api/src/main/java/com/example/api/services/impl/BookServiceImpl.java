@@ -6,7 +6,6 @@ import com.example.api.services.BookService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.ListIterator;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -25,6 +24,7 @@ public class BookServiceImpl implements BookService {
      * This method is implicitly transactional - Spring Data JPA transactions handle persistence.
      * If the book's AuthorEntity has CascadeType.ALL, saving the book may also persist/update the author.
      * The ISBN serves as the natural primary key (no auto-generation).
+     *
      * @param bookEntity the book entity to create
      * @return the saved book entity
      */
@@ -34,7 +34,7 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public List<BookEntity> findAll(){
+    public List<BookEntity> findAll() {
         Iterable<BookEntity> books = bookRepository.findAll();
         // stream method from StreamSupport class converts the iterable result to a new sequential or parallel stream from a Spliterator.
         // collect method from Stream class accumulates the elements of this stream into a List. The elements in the list will be in this stream's encounter order, if one exists.
@@ -45,7 +45,7 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public Optional<BookEntity> findById(String isbn){
+    public Optional<BookEntity> findById(String isbn) {
         return bookRepository.findById(isbn);
 
     }

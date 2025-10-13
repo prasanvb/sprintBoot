@@ -28,7 +28,7 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
-    public List<AuthorEntity> findAll(){
+    public List<AuthorEntity> findAll() {
         Iterable<AuthorEntity> allAuthors = authorRepository.findAll();
         // stream method from StreamSupport class converts the iterable result to a new sequential or parallel stream from a Spliterator.
         // collect method from Stream class accumulates the elements of this stream into a List. The elements in the list will be in this stream's encounter order, if one exists.
@@ -39,7 +39,7 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
-    public Optional<AuthorEntity> findById(Long id){
+    public Optional<AuthorEntity> findById(Long id) {
         return authorRepository.findById(id);
     }
 }

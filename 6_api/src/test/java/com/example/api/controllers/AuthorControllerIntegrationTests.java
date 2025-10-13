@@ -16,7 +16,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import static com.example.api.util.Constants.*;
+import static com.example.api.util.Constants.AGE;
+import static com.example.api.util.Constants.NAME;
 
 // Loads the full Spring application context for integration testing
 @SpringBootTest
@@ -52,15 +53,15 @@ public class AuthorControllerIntegrationTests {
 
         // Perform POST /authors and verify the response
         mockMvc.perform(
-                MockMvcRequestBuilders.post("/authors")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(authorJsonAsString)
-        )
-        // Expect HTTP 201 Created status
-        .andExpect(MockMvcResultMatchers.status().isCreated())
-        .andExpect(MockMvcResultMatchers.jsonPath("$.id").isNumber())
-        .andExpect(MockMvcResultMatchers.jsonPath("$.name").value(NAME))
-        .andExpect(MockMvcResultMatchers.jsonPath("$.age").value(AGE));
+                        MockMvcRequestBuilders.post("/authors")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(authorJsonAsString)
+                )
+                // Expect HTTP 201 Created status
+                .andExpect(MockMvcResultMatchers.status().isCreated())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.id").isNumber())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.name").value(NAME))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.age").value(AGE));
     }
 
     @Test
@@ -69,12 +70,12 @@ public class AuthorControllerIntegrationTests {
         authorService.createAuthor(testAuthorEntity);
 
         mockMvc.perform(
-                MockMvcRequestBuilders.get("/authors")
-                        .contentType(MediaType.APPLICATION_JSON)
-        ).andExpect(MockMvcResultMatchers.status().isOk())
-        .andExpect(MockMvcResultMatchers.jsonPath("$[0].id").isNumber())
-        .andExpect(MockMvcResultMatchers.jsonPath("$[0].name").value(NAME))
-        .andExpect(MockMvcResultMatchers.jsonPath("$[0].age").value(AGE));
+                        MockMvcRequestBuilders.get("/authors")
+                                .contentType(MediaType.APPLICATION_JSON)
+                ).andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].id").isNumber())
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].name").value(NAME))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].age").value(AGE));
 
     }
 
@@ -91,9 +92,9 @@ public class AuthorControllerIntegrationTests {
         mockMvc.perform(
                         MockMvcRequestBuilders.get(findAuthorByUrl)
                                 .contentType(MediaType.APPLICATION_JSON)
-        ).andExpect(MockMvcResultMatchers.status().isOk())
-        .andExpect(MockMvcResultMatchers.jsonPath("$.name").value(NAME))
-        .andExpect(MockMvcResultMatchers.jsonPath("$.age").value(AGE));
+                ).andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.name").value(NAME))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.age").value(AGE));
 
     }
 }

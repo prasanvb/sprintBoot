@@ -1,7 +1,7 @@
 package com.example.api.mappers.impl;
 
-import com.example.api.domain.entity.AuthorEntity;
 import com.example.api.domain.dto.AuthorDto;
+import com.example.api.domain.entity.AuthorEntity;
 import com.example.api.mappers.Mapper;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +19,7 @@ public class AuthorMapperImpl implements Mapper<AuthorEntity, AuthorDto> {
 
     /**
      * Constructor for AuthorMapperImpl.
+     *
      * @param modelMapper the ModelMapper instance injected by Spring for object mapping
      */
     @Autowired
@@ -28,6 +29,7 @@ public class AuthorMapperImpl implements Mapper<AuthorEntity, AuthorDto> {
 
     /**
      * Maps an AuthorDto to an AuthorEntity.
+     *
      * @param authorDto the AuthorDto to map
      * @return the corresponding AuthorEntity, or null if the input is null
      */
@@ -56,6 +58,7 @@ public class AuthorMapperImpl implements Mapper<AuthorEntity, AuthorDto> {
 
     /**
      * Maps an AuthorEntity to an AuthorDto.
+     *
      * @param authorEntity the AuthorEntity to map
      * @return the corresponding AuthorDto, or null if the input is null
      */
