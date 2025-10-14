@@ -44,14 +44,14 @@ public class BookControllerIntegrationTests {
     @Test
     public void testThatCreateBookWithValidAuthorSavedSuccessfully() throws Exception {
 
-        String bookJsonAsString = objectMapper.writeValueAsString(testBookEntity);
+        String bookJsonAsString = objectMapper.writeValueAsString(TestDataUtil.buildBook(ISBN_2, TITLE, testAuthorEntity));
 
         mockMvc.perform(
-                        MockMvcRequestBuilders.put(bookByIsbnUrl(ISBN))
+                        MockMvcRequestBuilders.put(bookByIsbnUrl(ISBN_2))
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(bookJsonAsString)
                 ).andExpect(MockMvcResultMatchers.status().isCreated())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.isbn").value(ISBN))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.isbn").value(ISBN_2))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.title").value(TITLE));
     }
 
