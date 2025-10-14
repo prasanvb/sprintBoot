@@ -85,9 +85,13 @@ public class AuthorController {
     }
 
     @GetMapping(path = AUTHORS_BY_NAME)
-    public List<AuthorDto> findAuthorsByName(@PathVariable String name) {
+    public ResponseEntity<List<AuthorDto>> findAuthorsByName(@RequestParam("name") String name) {
+        if (name == null || name.trim().isEmpty() || name.trim().equals(",")) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
         List<AuthorEntity> authorEntities = authorService.findAuthorsByName(name);
-        return getAuthorDtoList(authorEntities);
+        return new ResponseEntity<>(getAuthorDtoList(authorEntities), HttpStatus.OK);
     }
 
     @PutMapping(path = UPDATE_AUTHOR_BY_ID)

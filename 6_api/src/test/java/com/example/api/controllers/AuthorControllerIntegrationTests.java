@@ -116,4 +116,30 @@ public class AuthorControllerIntegrationTests {
 
     }
 
+    @Test
+    public void testThatFindAuthorsByNameReturnsHttpsStatus200AndAuthors() throws Exception {
+
+        authorService.saveAuthor(testAuthorEntity);
+
+        mockMvc.perform(
+                        MockMvcRequestBuilders.get(AUTHORS_BY_NAME)
+                                .param("name", NAME)
+                                .contentType(MediaType.APPLICATION_JSON)
+                ).andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].name").value(NAME))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].age").value(AGE));
+
+    }
+
+    @Test
+    public void testThatFindAuthorsByNameReturnsEmptyListForEmptyName() throws Exception {
+
+        mockMvc.perform(
+                        MockMvcRequestBuilders.get(AUTHORS_BY_NAME)
+                                .param("name", "")
+                                .contentType(MediaType.APPLICATION_JSON)
+                ).andExpect(MockMvcResultMatchers.status().isBadRequest());
+
+    }
+
 }

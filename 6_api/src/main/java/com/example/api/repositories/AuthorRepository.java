@@ -23,7 +23,7 @@ public interface AuthorRepository extends CrudRepository<AuthorEntity, Long> {
     @Query(value = "SELECT a from AuthorEntity a where a.age > ?1")
     Iterable<AuthorEntity> findAuthorsAgeGreaterThan(int i);
 
-    // Native SQL query against table columns
-    @Query(value = "SELECT * FROM authors WHERE name = ?", nativeQuery = true)
+    // Native SQL query against table columns (partial, case-insensitive matching)
+    @Query(value = "SELECT * FROM authors WHERE LOWER(name) LIKE CONCAT('%', LOWER(?1), '%')", nativeQuery = true)
     Iterable<AuthorEntity> findAuthorByName(String name);
 }
