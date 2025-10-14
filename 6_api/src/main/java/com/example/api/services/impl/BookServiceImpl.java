@@ -63,4 +63,9 @@ public class BookServiceImpl implements BookService {
             return bookRepository.save(existingBookEntity);
         }).orElseThrow(() -> new RuntimeException("Author does not exists"));
     }
+
+    @Override
+    public void deleteBookByIsbn(String isbn){
+        bookRepository.deleteById(isbn);
+    }
 }

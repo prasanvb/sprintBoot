@@ -96,4 +96,19 @@ public class BookController {
 
     }
 
+    @DeleteMapping(path = BOOK_BY_ISBN)
+    public ResponseEntity<Void> deleteBookByIsbn(@PathVariable String isbn){
+        if (isbn.trim().isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        if (!bookService.isBookExists(isbn)) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        bookService.deleteBookByIsbn(isbn);
+
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
 }
