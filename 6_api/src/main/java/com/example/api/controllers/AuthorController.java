@@ -44,13 +44,17 @@ public class AuthorController {
         return authorDtolist;
     }
 
-    @GetMapping(path = AUTHORS)
-    public List<AuthorDto> authors() {
-        List<AuthorEntity> authorEntities = authorService.findAll();
+    private List<AuthorDto> getAuthorDtoList(List<AuthorEntity> authorEntities) {
         return authorEntities  // Start with the list of AuthorEntity objects
                 .stream()  // Convert list to Stream for functional operations
                 .map(authorMapper::mapTo)  // Transform each AuthorEntity to AuthorDto using the mapper
-                .collect(Collectors.toList());  // Collect the mapped DTOs into a List<AuthorDto>
+                .collect(Collectors.toList()); // Collect the mapped DTOs into a List<AuthorDto>
+    }
+
+    @GetMapping(path = AUTHORS)
+    public List<AuthorDto> authors() {
+        List<AuthorEntity> authorEntities = authorService.findAll();
+        return getAuthorDtoList(authorEntities);
 
     }
 
@@ -68,12 +72,23 @@ public class AuthorController {
         }).orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    // @GetMapping(path = "/authors/age-less-than/{age}")
+    @GetMapping(path = AUTHORS_AGE_LESS_THAN)
+    public List<AuthorDto> findAuthorsAgeLessThan(@PathVariable int age) {
+        List<AuthorEntity> authorEntities = authorService.findAuthorsAgeLessThan(age);
+        return getAuthorDtoList(authorEntities);
+    }
 
-    // @GetMapping(path = "/authors/age-greater-than/{age}")
+    @GetMapping(path = AUTHORS_AGE_GREATER_THAN)
+    public List<AuthorDto> findAuthorsAgeGreaterThan(@PathVariable int age) {
+        List<AuthorEntity> authorEntities = authorService.findAuthorsAgeGreaterThan(age);
+        return getAuthorDtoList(authorEntities);
+    }
 
-    // @GetMapping(path = "/authors/name/{name}")
-
+    @GetMapping(path = AUTHORS_BY_NAME)
+    public List<AuthorDto> findAuthorsByName(@PathVariable String name) {
+        List<AuthorEntity> authorEntities = authorService.findAuthorsByName(name);
+        return getAuthorDtoList(authorEntities);
+    }
 
     @PutMapping(path = UPDATE_AUTHOR_BY_ID)
     public ResponseEntity<AuthorDto> updateAuthorById(@PathVariable Long id, @RequestBody AuthorDto authorDto) {
@@ -92,5 +107,8 @@ public class AuthorController {
 
         return new ResponseEntity<>(savedAuthorDto, HttpStatus.OK);
     }
+
+    // @PatchMapping(path = PATCH_AUTHOR_BY_ID)
+
 
 }

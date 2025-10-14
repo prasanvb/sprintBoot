@@ -3,12 +3,11 @@ package com.example.api.services.impl;
 import com.example.api.domain.entity.AuthorEntity;
 import com.example.api.repositories.AuthorRepository;
 import com.example.api.services.AuthorService;
+import com.example.api.utils.UtilityMethods;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 @Service
 public class AuthorServiceImpl implements AuthorService {
@@ -30,12 +29,25 @@ public class AuthorServiceImpl implements AuthorService {
     @Override
     public List<AuthorEntity> findAll() {
         Iterable<AuthorEntity> allAuthors = authorRepository.findAll();
-        // stream method from StreamSupport class converts the iterable result to a new sequential or parallel stream from a Spliterator.
-        // collect method from Stream class accumulates the elements of this stream into a List. The elements in the list will be in this stream's encounter order, if one exists.
-        // Collector accumulates the input elements into a new List. There are no guarantees on the type, mutability, serializability, or thread-safety of the List.
-        return StreamSupport
-                .stream(allAuthors.spliterator(), false)
-                .collect(Collectors.toList());
+        return UtilityMethods.getAuthorEntityList(allAuthors);
+    }
+
+    @Override
+    public List<AuthorEntity> findAuthorsAgeLessThan(int age) {
+        Iterable<AuthorEntity> authors = authorRepository.ageLessThan(age);
+        return UtilityMethods.getAuthorEntityList(authors);
+    }
+
+    @Override
+    public List<AuthorEntity> findAuthorsAgeGreaterThan(int age) {
+        Iterable<AuthorEntity> authors = authorRepository.findAuthorsAgeGreaterThan(age);
+        return UtilityMethods.getAuthorEntityList(authors);
+    }
+
+    @Override
+    public List<AuthorEntity> findAuthorsByName(String name) {
+        Iterable<AuthorEntity> authors = authorRepository.findAuthorByName(name);
+        return UtilityMethods.getAuthorEntityList(authors);
     }
 
     @Override
@@ -43,9 +55,9 @@ public class AuthorServiceImpl implements AuthorService {
         return authorRepository.findById(id);
     }
 
-
     @Override
     public Boolean isExists(Long id) {
         return authorRepository.existsById(id);
     }
+
 }

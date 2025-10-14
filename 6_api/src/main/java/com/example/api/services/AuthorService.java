@@ -14,4 +14,10 @@ public interface AuthorService {
     Optional<AuthorEntity> findById(Long id);
 
     Boolean isExists(Long id);
+
+    List<AuthorEntity> findAuthorsAgeLessThan(int age);
+
+    List<AuthorEntity> findAuthorsAgeGreaterThan(int age);
+
+    List<AuthorEntity> findAuthorsByName(String name);
 }
