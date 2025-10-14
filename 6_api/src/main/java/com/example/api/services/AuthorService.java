@@ -23,5 +23,5 @@ public interface AuthorService {
 
     List<AuthorEntity> findAuthorsByName(String name);
 
-
+    void deleteById(Long id);
 }

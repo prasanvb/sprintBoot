@@ -163,6 +163,21 @@ public class AuthorControllerIntegrationTests {
 
     }
 
+    @Test
+    public void testThatDeleteAuthorByIdReturnsHttpStatus204() throws Exception {
+        AuthorEntity savedAuthorEntity = authorService.saveAuthor(testAuthorEntity);
+        Long extractedId = savedAuthorEntity.getId();
 
+        mockMvc.perform(
+                        MockMvcRequestBuilders.delete(authorByIdUrl(extractedId))
+                )
+                .andExpect(MockMvcResultMatchers.status().isNoContent());
 
+        // Verify the author is deleted by attempting to fetch it
+        mockMvc.perform(
+                        MockMvcRequestBuilders.get(authorByIdUrl(extractedId))
+                                .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andExpect(MockMvcResultMatchers.status().isNotFound());
+    }
 }

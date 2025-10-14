@@ -5,6 +5,7 @@ import com.example.api.repositories.AuthorRepository;
 import com.example.api.services.AuthorService;
 import com.example.api.utils.UtilityMethods;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -69,6 +70,12 @@ public class AuthorServiceImpl implements AuthorService {
     @Override
     public Boolean isExists(Long id) {
         return authorRepository.existsById(id);
+    }
+
+    @Override
+    @Transactional
+    public void deleteById(Long id){
+        authorRepository.deleteById(id);
     }
 
 }
