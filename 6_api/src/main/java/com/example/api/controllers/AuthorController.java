@@ -112,7 +112,23 @@ public class AuthorController {
         return new ResponseEntity<>(savedAuthorDto, HttpStatus.OK);
     }
 
-    // @PatchMapping(path = PATCH_AUTHOR_BY_ID)
+     @PatchMapping(path = PATCH_AUTHOR_BY_ID)
+     public ResponseEntity<AuthorDto> patchAuthorById(@PathVariable Long id, @RequestBody AuthorDto authorDto) {
+         if (id == null) {
+             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+         }
+
+         if (!authorService.isExists(id)) {
+             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+         }
+
+         authorDto.setId(id);
+         AuthorEntity authorEntity = authorMapper.mapFrom(authorDto);
+         AuthorEntity savedAuthorEntity = authorService.partialUpdate(id, authorEntity);
+         AuthorDto savedAuthorDto = authorMapper.mapTo(savedAuthorEntity);
+
+         return new ResponseEntity<>(savedAuthorDto, HttpStatus.OK);
+     }
 
 
 }
