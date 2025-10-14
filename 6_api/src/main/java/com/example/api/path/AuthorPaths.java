@@ -17,4 +17,8 @@ public final class AuthorPaths {
     public static String updateAuthorByIdUrl(Long id) {
         return UPDATE_AUTHOR_BY_ID.replace("{id}", id.toString());
     }
+
+    public static String patchAuthorByIdUrl(Long id) {
+        return PATCH_AUTHOR_BY_ID.replace("{id}", id.toString());
+    }
 }

@@ -19,6 +19,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import static com.example.api.path.AuthorPaths.*;
 import static com.example.api.util.Constants.AGE;
 import static com.example.api.util.Constants.NAME;
+import static com.example.api.util.Constants.NAME_2;
 
 // Loads the full Spring application context for integration testing
 @SpringBootTest
@@ -141,5 +142,27 @@ public class AuthorControllerIntegrationTests {
                 ).andExpect(MockMvcResultMatchers.status().isBadRequest());
 
     }
+
+    @Test
+    public void testThatPatchAuthorByIdReturnsHttpsStatus200() throws Exception {
+        AuthorEntity savedAuthorEntity = authorService.saveAuthor(testAuthorEntity);
+        Long extractedId = savedAuthorEntity.getId();
+
+        // Create partial update DTO with only some fields
+        String authorDtoJsonAsString = objectMapper.writeValueAsString(TestDataUtil.buildAuthor(extractedId, NAME_2, null));
+
+        mockMvc.perform(
+                        MockMvcRequestBuilders.patch(patchAuthorByIdUrl(extractedId))
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(authorDtoJsonAsString)
+                )
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(extractedId))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.name").value(NAME_2))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.age").value(AGE)); // Age should remain unchanged
+
+    }
+
+
 
 }

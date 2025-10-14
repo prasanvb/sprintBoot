@@ -9,7 +9,7 @@ public class TestDataUtil {
     private TestDataUtil() {
     }
 
-    public static AuthorEntity buildAuthor(Long id, String name, int age) {
+    public static AuthorEntity buildAuthor(Long id, String name, Integer age) {
         return AuthorEntity.builder()
                 .id(id)
                 .name(name)
