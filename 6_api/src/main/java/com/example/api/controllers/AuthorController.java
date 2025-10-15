@@ -45,7 +45,7 @@ public class AuthorController {
         return authorDtolist;
     }
 
-    // /page-authors?size=10&page=3
+    // /page-authors?size=10&page=2
     @GetMapping(path = PAGE_AUTHORS)
     public Page<AuthorDto> pageAuthors(Pageable pageable) {
         Page<AuthorEntity> authorEntities = authorService.findAll(pageable);
@@ -92,6 +92,7 @@ public class AuthorController {
         return getAuthorDtoList(authorEntities);
     }
 
+    // /authors/search?name=sample
     @GetMapping(path = AUTHORS_BY_NAME)
     public ResponseEntity<List<AuthorDto>> findAuthorsByName(@RequestParam("name") String name) {
         if (name == null || name.trim().isEmpty() || name.trim().equals(",")) {

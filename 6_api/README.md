@@ -359,56 +359,169 @@ changes manually.
 
 #### Authors
 
-| Method | Endpoint      |
-|--------|---------------|
-| POST   | /authors      |
-| GET    | /authors/{id} |
-| GET    | /authors      |
-| PUT    | /authors/{id} |
-| PATCH  | /authors/{id} |
-| DELETE | /authors/{id} |
+| Method | Endpoint                        |
+|--------|---------------------------------|
+| POST   | /authors                        |
+| GET    | /list-authors                   |
+| GET    | /page-authors                   |
+| GET    | /authors                        |
+| GET    | /authors/{id}                   |
+| GET    | /authors/age-less-than/{age}    |
+| GET    | /authors/age-greater-than/{age} |
+| GET    | /authors/search?name=           |
+| PUT    | /authors/update/{id}            |
+| PATCH  | /authors/patch/{id}             |
+| DELETE | /authors/{id}                   |
 
 #### Books
 
-| Method | Endpoint      |
-|--------|---------------|
-| PUT    | /books/{isbn} |
-| GET    | /books/{isbn} |
-| GET    | /books        |
-| PUT    | /books/{isbn} |
-| PATCH  | /books/{isbn} |
-| DELETE | /books/{isbn} |
+| Method | Endpoint       |
+|--------|----------------|
+| PUT    | /books/{isbn}  |
+| GET    | /books         |
+| GET    | /books/{isbn}  |
+| PATCH  | /books/{isbn}  |
+| DELETE | /books/{isbn}  |
 
 #### API Requests data
 
-- Author object
-    - HTTP method `POST`  and path `/authors`
+**Authors API Endpoints:**
+
+- Author creation
+    - HTTP method `POST`, path `/authors`
+    - Create a new author
     - `id` is auto-generated
+    - Request: AuthorDto (name, age)
+    - Response: 201 Created with full AuthorDto including generated id
 
-```json
-    {
-        "name": "Sanjeev Sanyal",
-        "age": 50
-    }
-```
+    ```json
+        {
+            "name": "Sanjeev Sanyal",
+            "age": 50
+        }
+    ```
 
-- Book with nested Author object
-    - HTTP method `PUT`  and path `/books/{isbn}`
-    - `id` has to be valid existing author id
-    - `isbn` has to be unique
-    - `name` and `age` is overridden from author with id=1
+- List all authors
+    - HTTP method `GET`, path `/list-authors`
+    - Retrieve all authors as list
+    - No request body required
 
-```json
-    {
-      "isbn": "9780-lkw8-4789",
-      "title": "Land of seven rivers-2",
-      "authorDto": {
-        "id": 1,
-        "name": "Sanjeev Sanyal",
-        "age": 50
-      }
-    }
-```
+- Paginated authors list
+    - HTTP method `GET`, path `/page-authors?page=0&size=10`
+    - Retrieve paginated authors
+    - Query params: page (default 0), size (default 20)
+    - No request body required
+
+- Get authors list (alternative endpoint)
+    - HTTP method `GET`, path `/authors`
+    - Retrieve all authors as list
+    - No request body required
+
+- Get author by ID
+    - HTTP method `GET`, path `/authors/{id}`
+    - Retrieve specific author by ID
+    - Path variable: id (Long, required)
+    - No request body required
+
+- Find authors by age less than
+    - HTTP method `GET`, path `/authors/age-less-than/{age}`
+    - Retrieve authors younger than specified age
+    - Path variable: age (Integer, required)
+    - No request body required
+
+- Find authors by age greater than
+    - HTTP method `GET`, path `/authors/age-greater-than/{age}`
+    - Retrieve authors older than specified age
+    - Path variable: age (Integer, required)
+    - No request body required
+
+- Search authors by name
+    - HTTP method `GET`, path `/authors/search?name={name}`
+    - Find authors by name (partial match)
+    - Query param: name (String, required, non-empty)
+    - No request body required
+
+- Update author (full update)
+    - HTTP method `PUT`, path `/authors/update/{id}`
+    - Replace entire author record
+    - Path variable: id (Long, required, must exist)
+    - Request: AuthorDto (id auto-set to path variable)
+
+    ```json
+        {
+            "name": "Updated Name",
+            "age": 55
+        }
+    ```
+
+- Partial update author
+    - HTTP method `PATCH`, path `/authors/patch/{id}`
+    - Update only provided fields
+    - Path variable: id (Long, required, must exist)
+    - Request: AuthorDto (only fields to update, null fields ignored)
+
+    ```json
+        {
+            "age": 60
+        }
+    ```
+
+- Delete author by ID
+    - HTTP method `DELETE`, path `/authors/{id}`
+    - Remove author from database
+    - Path variable: id (Long, required, must exist)
+    - No request or response body
+
+**Books API Endpoints:**
+
+- Create/Update book (upsert)
+    - HTTP method `PUT`, path `/books/{isbn}`
+    - Create new book or update existing one by ISBN
+    - Path variable: isbn (String, required, overrides request body ISBN)
+    - Request: BookDto with nested AuthorDto (includes author id/nested author data)
+    - Enables cascading author creation/saves
+    - Author relationship updates trigger cascading saves 
+
+    ```json
+        {
+          "isbn": "9780-lkw8-4789",
+          "title": "Land of seven rivers-2",
+          "authorDto": {
+            "id": 1,
+            "name": "Sanjeev Sanyal",
+            "age": 50
+          }
+        }
+    ```
+
+- List all books
+    - HTTP method `GET`, path `/books`
+    - Retrieve all books with nested author details
+    - No request body required
+
+- Get book by ISBN
+    - HTTP method `GET`, path `/books/{isbn}`
+    - Retrieve specific book by ISBN
+    - Path variable: isbn (String, required)
+    - No request body required
+
+- Partial update book
+    - HTTP method `PATCH`, path `/books/{isbn}`
+    - Update only provided book fields
+    - Path variable: isbn (String, required, must exist)
+    - Request: BookDto (only fields to update, null/Ignored fields)
+
+    ```json
+        {
+          "title": "Updated Title"
+        }
+    ```
+
+- Delete book by ISBN
+    - HTTP method `DELETE`, path `/books/{isbn}`
+    - Remove book from database
+    - Path variable: isbn (String, required, must exist)
+    - No request or response body (cascading delete not applied)
 
 ### Queries Summary
 
