@@ -4,6 +4,8 @@ import com.example.api.domain.entity.AuthorEntity;
 import com.example.api.repositories.AuthorRepository;
 import com.example.api.services.AuthorService;
 import com.example.api.utils.UtilityMethods;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -42,6 +44,11 @@ public class AuthorServiceImpl implements AuthorService {
     public List<AuthorEntity> findAll() {
         Iterable<AuthorEntity> allAuthors = authorRepository.findAll();
         return UtilityMethods.getAuthorEntityList(allAuthors);
+    }
+
+    @Override
+    public Page<AuthorEntity> findAll(Pageable pageable) {
+        return authorRepository.findAll(pageable);
     }
 
     @Override

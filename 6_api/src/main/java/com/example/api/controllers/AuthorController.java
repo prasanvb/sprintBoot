@@ -7,7 +7,8 @@ import com.example.api.services.AuthorService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -44,6 +45,14 @@ public class AuthorController {
         return authorDtolist;
     }
 
+    // /page-authors?size=10&page=3
+    @GetMapping(path = PAGE_AUTHORS)
+    public Page<AuthorDto> pageAuthors(Pageable pageable) {
+        Page<AuthorEntity> authorEntities = authorService.findAll(pageable);
+        return authorEntities.map(authorMapper::mapTo);   // Transform each AuthorEntity to AuthorDto using the mapper
+
+    }
+
     private List<AuthorDto> getAuthorDtoList(List<AuthorEntity> authorEntities) {
         return authorEntities  // Start with the list of AuthorEntity objects
                 .stream()  // Convert list to Stream for functional operations
@@ -55,7 +64,6 @@ public class AuthorController {
     public List<AuthorDto> authors() {
         List<AuthorEntity> authorEntities = authorService.findAll();
         return getAuthorDtoList(authorEntities);
-
     }
 
     @GetMapping(path = AUTHOR_BY_ID)
